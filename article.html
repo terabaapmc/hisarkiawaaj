@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HisarKiAawaj — Read full verified local news report from Hisar and Haryana.">
+  <title id="pageMetaTitle">Article | HisarKiAawaj (हिसार की आवाज़)</title>
+
+  <!-- OpenGraph Social Sharing Tags -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" id="ogTitle" content="HisarKiAawaj News">
+  <meta property="og:description" id="ogDesc" content="Local reporting from Hisar and Haryana.">
+  <meta property="og:image" id="ogImage" content="">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Supabase JS Client v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="supabase-client.js"></script>
+  <!-- Shared public utilities: ticker, drawer, clock, back-to-top, admin detection -->
+  <script src="app.js"></script>
+
+  <style>
+    .article-page-container {
+      max-width: 860px;
+      margin: 24px auto 60px;
+      padding: 0 20px;
+    }
+
+    .article-header-zone {
+      margin-bottom: 20px;
+    }
+
+    .article-category-badge {
+      display: inline-block;
+      background: var(--brand-red);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: var(--radius-xs);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .article-full-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 3.2vw, 38px);
+      font-weight: 900;
+      line-height: 1.3;
+      color: var(--dark-obsidian);
+      margin-bottom: 16px;
+    }
+
+    .article-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 0;
+      font-size: 12px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .article-author-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .share-buttons-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-share-icon {
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      transition: var(--transition);
+    }
+
+    .btn-share-icon.whatsapp {
+      background: #25d366;
+      color: #ffffff;
+      border-color: #25d366;
+    }
+
+    .article-featured-hero-img {
+      width: 100%;
+      max-height: 520px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin: 20px 0;
+      box-shadow: var(--shadow-card);
+    }
+
+    .article-body-content {
+      font-size: 17px;
+      line-height: 1.85;
+      color: var(--text-secondary);
+      margin: 28px 0;
+    }
+
+    .article-body-content p {
+      margin-bottom: 20px;
+    }
+
+    .article-body-content h2,
+    .article-body-content h3 {
+      font-family: var(--font-serif);
+      color: var(--dark-obsidian);
+      margin: 28px 0 14px;
+      font-weight: 800;
+    }
+
+    .article-body-content blockquote {
+      border-left: 4px solid var(--brand-red);
+      padding: 12px 20px;
+      background: #f8fafc;
+      font-style: italic;
+      color: var(--dark-obsidian);
+      margin: 24px 0;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .in-article-sponsor-box {
+      margin: 32px 0;
+      background: linear-gradient(135deg, #094765 0%, #17658c 100%);
+      color: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .related-stories-section {
+      margin-top: 48px;
+      border-top: 2px solid var(--border-color);
+      padding-top: 28px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================================
+       HEADER LAYER 1: Top Network & City Strip
+       ====================================================================== -->
+  <div class="network-top-strip">
+    <div class="container network-strip-inner">
+      <div class="network-strip-left">
+        <span id="liveDateTimeIst">शनिवार, 17 अक्टूबर 2026 | 00:00 IST</span>
+        <span style="color: var(--border-color);">|</span>
+        <div class="network-cities-list">
+          <a href="category.html?slug=hisar-special" class="city-pill-link highlight">हिसार विशेष</a>
+          <a href="category.html?slug=hisar-special&district=hansi" class="city-pill-link">हांसी</a>
+          <a href="category.html?slug=hisar-special&district=barwala" class="city-pill-link">बरवाला</a>
+          <a href="category.html?slug=haryana&district=fatehabad" class="city-pill-link">फतेहाबाद</a>
+          <a href="category.html?slug=haryana&district=sirsa" class="city-pill-link">सिरसा</a>
+          <a href="category.html?slug=mandi-rates" class="city-pill-link highlight">MandiTak ▾</a>
+        </div>
+      </div>
+      <div class="network-strip-right">
+        <button class="city-pill-link" id="langToggleBtn" type="button" style="font-weight: 700;">EN / हिंदी</button>
+        <a href="admin/login.html" class="btn-signin-pill" title="Administrator Login">
+          <span>Admin Login</span>
+          <span>👤</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       HEADER LAYER 2: Masthead
+       ====================================================================== -->
+  <header class="express-masthead">
+    <div class="container express-masthead-inner">
+      <div class="masthead-weather-date">
+        <div class="masthead-weather-row" id="mastheadWeatherWidget" style="cursor: pointer;" title="AQI Report">
+          <span>☀️ 28°C हिसार (AQI 142 · मध्यम)</span>
+        </div>
+        <div class="masthead-sub-edition">
+          <span>आज का अखबार · HISAR DIGITAL EDITION</span>
+        </div>
+      </div>
+
+      <div class="masthead-center-brand">
+        <a href="index.html" class="express-brand-link" aria-label="HisarKiAawaj Homepage">
+          <div class="express-logo-group">
+            <div class="express-brand-seal">ह</div>
+            <div class="express-brand-text">HisarKi<span>Aawaj</span></div>
+          </div>
+          <div class="express-tagline-motto">साहस की पत्रकारिता · शहर की नब्ज़, आपकी ताक़त</div>
+        </a>
+      </div>
+
+      <div class="masthead-actions-right">
+        <!-- Admin CMS — hidden from public via CSS, shown only for logged-in admins -->
+        <a href="admin/dashboard.html" class="btn-ad-manager-pill" title="Open Admin CMS Dashboard">
+          <span>⚙️</span>
+          <span>Admin CMS</span>
+        </a>
+        <button class="btn-post-ad-primary" id="btnHeaderPostAd">
+          <span>📢</span>
+          <span>विज्ञापन लगाएं</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       HEADER LAYER 3: Deep Navy Main Navigation Bar
+       ====================================================================== -->
+  <nav class="aajtak-navbar" aria-label="Main Navigation">
+    <div class="container aajtak-nav-inner">
+      <div class="nav-left-cluster">
+        <button class="btn-hamburger-toggle" id="mobileMenuBtn" aria-label="Open Menu">☰</button>
+        <a href="index.html" class="aajtak-logo-badge">
+          <span>हिसार की आवाज़</span>
+        </a>
+      </div>
+
+      <div class="aajtak-nav-links">
+        <a href="index.html" class="aajtak-nav-item">होम</a>
+        <a href="category.html?slug=hisar-special" class="aajtak-nav-item" data-cat="hisar-special">हिसार विशेष <span class="chevron-down">▾</span></a>
+        <a href="category.html?slug=haryana" class="aajtak-nav-item" data-cat="haryana">हरियाणा <span class="chevron-down">▾</span></a>
+        <a href="category.html?slug=crime" class="aajtak-nav-item" data-cat="crime">क्राइम व जांच <span class="chevron-down">▾</span></a>
+        <a href="category.html?slug=mandi-rates" class="aajtak-nav-item" data-cat="mandi-rates" style="color: #fbbf24;">मंडी भाव 🔴</a>
+        <a href="category.html?slug=education" class="aajtak-nav-item" data-cat="education">शिक्षा-करियर <span class="chevron-down">▾</span></a>
+        <a href="category.html?slug=business" class="aajtak-nav-item" data-cat="business">कारोबार <span class="chevron-down">▾</span></a>
+        <a href="category.html?slug=sports" class="aajtak-nav-item" data-cat="sports">खेल <span class="chevron-down">▾</span></a>
+        <a href="category.html?slug=lifestyle" class="aajtak-nav-item" data-cat="lifestyle">लाइफस्टाइल</a>
+      </div>
+
+      <div class="aajtak-nav-right-tools">
+        <div class="edition-select-chip" id="editionSelectChip" title="Choose Edition">
+          <span>EDITION</span>
+          <span style="color: #f59e0b;" id="currentEditionLabel">🇮🇳 HISAR ▾</span>
+        </div>
+        <div class="edition-dropdown-menu" id="editionDropdownMenu">
+          <div class="edition-dropdown-item selected" data-edition="hisar">हिसार</div>
+          <div class="edition-dropdown-item" data-edition="hansi">हांसी</div>
+          <div class="edition-dropdown-item" data-edition="fatehabad">फतेहाबाद</div>
+          <div class="edition-dropdown-item" data-edition="sirsa">सिरसा</div>
+        </div>
+        <button class="tool-icon-btn" id="ePaperBtn" title="E-Paper"><span>📰</span></button>
+        <button class="tool-icon-btn" id="aqiBtn" title="Air Quality Index"><span>🍃 AQI 142</span></button>
+        <button class="tool-icon-btn" id="notificationsBtn" title="Alerts">
+          <span>🔔</span>
+          <span class="alert-counter-badge">3</span>
+        </button>
+        <button class="btn-live-tv-aajtak" id="liveTvBtn"><span>LIVE</span><span>📺</span></button>
+        <button class="tool-icon-btn" id="headerSearchBtn" title="Search"><span>🔍</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LAYER 4: Red Breaking News Bar -->
+  <div class="container aajtak-breaking-container" id="breakingNewsContainer">
+    <div class="aajtak-breaking-bar">
+      <span class="breaking-title-label">BREAKING NEWS</span>
+      <div class="breaking-story-text" id="breakingTickerText">
+        हिसार-रोहतक हाईवे पर नई रिंग रोड परियोजना को मिली मंज़ूरी
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="btn-pause-breaking" id="btnPauseBreaking" title="Pause / Play" style="color: #fff; font-size: 11px;">⏸</button>
+        <button class="btn-close-breaking" id="btnCloseBreaking" title="Dismiss">&times;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Off-Canvas Drawer -->
+  <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+  <div class="mobile-nav-drawer" id="mobileNavDrawer">
+    <div class="mobile-drawer-header">
+      <a href="index.html" class="mobile-drawer-logo">हिसार की आवाज़</a>
+      <button class="mobile-drawer-close" id="mobileDrawerCloseBtn">✕</button>
+    </div>
+    <div class="mobile-search-box">
+      <input type="search" id="mobileSearchInput" placeholder="समाचार खोजें..." class="mobile-search-input">
+    </div>
+    <nav class="mobile-drawer-nav">
+      <a href="index.html" class="mobile-drawer-link">🏠 होम</a>
+      <a href="category.html?slug=hisar-special" class="mobile-drawer-link">📍 हिसार विशेष</a>
+      <a href="category.html?slug=haryana" class="mobile-drawer-link">🏛️ हरियाणा</a>
+      <a href="category.html?slug=crime" class="mobile-drawer-link">🚨 क्राइम व जांच</a>
+      <a href="category.html?slug=mandi-rates" class="mobile-drawer-link">🌾 मंडी भाव</a>
+      <a href="category.html?slug=education" class="mobile-drawer-link">📚 शिक्षा-करियर</a>
+      <a href="category.html?slug=business" class="mobile-drawer-link">💼 कारोबार</a>
+      <a href="category.html?slug=sports" class="mobile-drawer-link">🏏 खेल</a>
+      <a href="category.html?slug=lifestyle" class="mobile-drawer-link">🎭 लाइफस्टाइल</a>
+    </nav>
+  </div>
+
+  <!-- Public Modals (Search, AQI, etc.) -->
+  <div class="public-modal-backdrop" id="searchModal">
+    <div class="public-modal-box">
+      <button class="public-modal-close" id="closeSearchModal">✕</button>
+      <h3 style="font-size:20px;font-weight:800;margin-bottom:16px;">🔍 समाचार खोजें</h3>
+      <div style="display:flex;gap:8px;">
+        <input type="search" id="quickSearchInput" placeholder="शीर्षक, विषय या शहर..." class="search-input-field" style="flex:1;padding:12px 16px;border:2px solid var(--border-color);border-radius:var(--radius-full);font-size:14px;">
+        <button id="btnQuickSearchSubmit" class="btn-post-ad-primary">खोजें ↗</button>
+      </div>
+    </div>
+  </div>
+  <div class="public-modal-backdrop" id="weatherAqiModal">
+    <div class="public-modal-box">
+      <button class="public-modal-close" id="closeWeatherModal">✕</button>
+      <h3 style="font-size:20px;font-weight:800;margin-bottom:16px;">🍃 हिसार AQI व मौसम</h3>
+      <p style="font-size:14px;color:var(--text-muted);">वायु गुणवत्ता सूचकांक (AQI): <strong style="color:#f59e0b;">142 — मध्यम</strong></p>
+      <p style="font-size:14px;margin-top:8px;">तापमान: ☀️ 28°C | आर्द्रता: 45% | हवा: NW 12 km/h</p>
+    </div>
+  </div>
+  <div class="public-modal-backdrop" id="liveTvModal">
+    <div class="public-modal-box">
+      <button class="public-modal-close" id="closeLiveTvModal">✕</button>
+      <h3 style="font-size:18px;font-weight:800;margin-bottom:12px;">📺 Live TV — HisarKiAawaj</h3>
+      <p style="color:var(--text-muted);font-size:13px;">Live streaming service is coming soon. Follow us on YouTube for live coverage.</p>
+      <a href="https://youtube.com" target="_blank" rel="noopener" class="btn-post-ad-primary" style="display:inline-flex;margin-top:12px;">YouTube पर देखें ↗</a>
+    </div>
+  </div>
+  <div class="public-modal-backdrop" id="notificationsModal">
+    <div class="public-modal-box">
+      <button class="public-modal-close" id="closeNotificationsModal">✕</button>
+      <h3 style="font-size:18px;font-weight:800;margin-bottom:12px;">🔔 ताज़ा अलर्ट</h3>
+      <p style="color:var(--text-muted);font-size:13px;">HisarKiAawaj के WhatsApp चैनल से जुड़ें और हर खबर सबसे पहले पाएं।</p>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       ARTICLE CONTENT MAIN
+       ====================================================================== -->
+  <main class="article-page-container">
+    <div id="articleLoadingState" style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+      <div style="font-size: 28px; margin-bottom: 10px;">📰</div>
+      <h3>समाचार लोड हो रहा है... (Loading Article)</h3>
+    </div>
+
+    <article id="articleContentZone" style="display: none;">
+      <div class="article-header-zone">
+        <a class="article-category-badge" id="articleCategoryText" href="category.html" style="text-decoration:none;">हिसार विशेष</a>
+        <h1 class="article-full-headline" id="articleHeadlineText"></h1>
+        
+        <div class="article-meta-row">
+          <div class="article-author-info">
+            <span>✍️</span>
+            <span id="articleAuthorText">HisarKiAawaj Bureau</span>
+            <span>•</span>
+            <span id="articleDateText"></span>
+          </div>
+
+          <div class="share-buttons-group">
+            <a href="#" id="btnShareWa" target="_blank" class="btn-share-icon whatsapp">
+              <span>WhatsApp</span>
+            </a>
+            <button class="btn-share-icon" onclick="copyArticleLink()">
+              <span>🔗 Copy Link</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <img id="articleFeaturedImg" src="" alt="Featured Article Image" class="article-featured-hero-img">
+
+      <!-- In-Article Native Sponsor Unit -->
+      <div class="in-article-sponsor-box" id="inArticleAdBox">
+        <div>
+          <span class="ad-badge-tiny">SPONSORED · LOCAL HEALTHCARE</span>
+          <h4 style="font-size: 16px; font-weight: 800; margin-top: 2px;" id="inArticleSponsorTitle">
+            महात्मा गांधी कैंसर इंस्टीट्यूट हिसार — डॉ. रमेश बिश्नोई
+          </h4>
+          <p style="font-size: 11px; opacity: 0.9;" id="inArticleSponsorSub">
+            AIIMS दिल्ली व टाटा मेमोरियल से प्रशिक्षित विशेषज्ञ · फोन: 99924-87111
+          </p>
+        </div>
+        <a href="tel:9992487111" class="ad-cta-pill-white" id="inArticleCtaBtn">परामर्श लें ↗</a>
+      </div>
+
+      <!-- Full Article Body -->
+      <div class="article-body-content" id="articleBodyHtml"></div>
+
+      <!-- Related Stories -->
+      <section class="related-stories-section">
+        <h3 style="font-family: var(--font-serif); font-size: 22px; font-weight: 800; margin-bottom: 20px;">अन्य प्रमुख खबरें (Related News)</h3>
+        <div class="regional-news-grid" id="relatedNewsGrid">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-bottom-strip" style="border: none; padding-top: 0;">
+      <div>&copy; 2026 HisarKiAawaj Media · हिसार, हरियाणा। सर्वाधिकार सुरक्षित।</div>
+      <div><a href="index.html" style="color: #fff; font-weight: 700;">← मुख्य पृष्ठ पर लौटें</a></div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
+
+      if (!slug) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      let article = null;
+      if (window.HisarKiAawaj?.isSupabaseConfigured()) {
+        article = await window.HisarKiAawaj.getArticleBySlug(slug);
+      }
+
+      // Fallback if not found in live Supabase or keys not plugged in
+      if (!article) {
+        article = getFallbackArticleBySlug(slug);
+      }
+
+      if (!article) {
+        document.getElementById('articleLoadingState').innerHTML = `
+          <h3 style="color: #dc2626;">समाचार नहीं मिला (Article Not Found)</h3>
+          <p style="margin: 10px 0 20px;">यह समाचार ड्राफ्ट में हो सकता है या हटा दिया गया है।</p>
+          <a href="index.html" class="btn-post-ad-primary">मुख्य पृष्ठ पर जाएं</a>
+        `;
+        return;
+      }
+
+      // Populate Article Data
+      document.title = `${article.title} | HisarKiAawaj`;
+      document.getElementById('pageMetaTitle').textContent = `${article.title} | HisarKiAawaj`;
+      document.getElementById('ogTitle').content = article.title;
+      document.getElementById('ogDesc').content = article.excerpt || article.title;
+      document.getElementById('ogImage').content = article.featured_image || '';
+
+      const categoryBadge = document.getElementById('articleCategoryText');
+      if (categoryBadge) {
+        categoryBadge.textContent = article.categories?.name || 'हिसार विशेष';
+        // Wire category badge to correct category page
+        const catSlug = article.categories?.slug || 'hisar-special';
+        categoryBadge.href = `category.html?slug=${catSlug}`;
+      }
+
+      document.getElementById('articleHeadlineText').textContent = article.title;
+      document.getElementById('articleAuthorText').textContent = article.author_name || 'HisarKiAawaj Bureau';
+      document.getElementById('articleDateText').textContent = formatDate(article.published_at || article.created_at);
+      document.getElementById('articleFeaturedImg').src = article.featured_image || 'https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?w=1200';
+      document.getElementById('articleBodyHtml').innerHTML = article.content || `<p>${article.excerpt}</p>`;
+
+      // WhatsApp Share Link
+      const shareUrl = encodeURIComponent(window.location.href);
+      const shareText = encodeURIComponent(`${article.title}\n\nपढ़ें HisarKiAawaj पर: `);
+      document.getElementById('btnShareWa').href = `https://api.whatsapp.com/send?text=${shareText}${shareUrl}`;
+
+      // Show content
+      document.getElementById('articleLoadingState').style.display = 'none';
+      document.getElementById('articleContentZone').style.display = 'block';
+
+      // Load active in-article ad if available in Supabase
+      loadInArticleAd();
+      // Pass category slug for related story filtering
+      loadRelatedStories(article.categories?.slug, article.slug);
+    });
+
+    async function loadInArticleAd() {
+      if (window.HisarKiAawaj?.isSupabaseConfigured()) {
+        const ads = await window.HisarKiAawaj.getActiveAdvertisements();
+        const inArticleAd = ads?.find(a => a.placement === 'in_article' || a.placement === 'top_leaderboard');
+        if (inArticleAd) {
+          document.getElementById('inArticleSponsorTitle').textContent = inArticleAd.sponsor_title || inArticleAd.name;
+          document.getElementById('inArticleSponsorSub').textContent = inArticleAd.sponsor_subtitle || '';
+          document.getElementById('inArticleCtaBtn').href = inArticleAd.destination_url || '#';
+          document.getElementById('inArticleCtaBtn').textContent = inArticleAd.cta_text || 'क्लिक करें ↗';
+        }
+      }
+    }
+
+    async function loadRelatedStories(categorySlug, currentSlug) {
+      let articles = [];
+      if (window.HisarKiAawaj?.isSupabaseConfigured()) {
+        // Fetch articles from same category
+        const result = await window.HisarKiAawaj.getPublicArticles({
+          limit: 4,
+          categorySlug: categorySlug || null,
+        }) || [];
+        // Exclude the currently viewed article
+        articles = result.filter(a => a.slug !== currentSlug).slice(0, 2);
+      }
+      if (articles.length === 0) {
+        // Fallback — show from FALLBACK_ARTICLES (window scope not available here, use inline)
+        const fallbackItems = [
+          {
+            title: 'दुखद: पिता ने पढ़ाई के लिए डांटा तो 14 वर्षीय छात्रा ने फंदा लगा दी जान !',
+            slug: 'tragic-student-incident-hisar-oct-2026',
+            categories: { name: 'क्राइम' },
+            published_at: new Date(Date.now() - 86400000).toISOString(),
+            image: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=400'
+          },
+          {
+            title: 'हिसार में सजेगी सुरों की महफ़िल: 24 अक्टूबर को होगा "DESIVERSE" का भव्य आयोजन',
+            slug: 'desiverse-cultural-music-fest-hisar-2026',
+            categories: { name: 'संस्कृति' },
+            published_at: new Date(Date.now() - 172800000).toISOString(),
+            image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400'
+          },
+          {
+            title: 'अवैध कॉलोनियों पर नगर निगम की बड़ी कार्रवाई, 14 निर्माण कार्यों पर रोक',
+            slug: 'municipal-unauthorized-construction-ban-oct-2026',
+            categories: { name: 'हिसार विशेष' },
+            published_at: new Date(Date.now() - 3 * 86400000).toISOString(),
+            image: 'https://images.unsplash.com/photo-1575505586569-646b2ca898fc?w=400'
+          }
+        ];
+        articles = fallbackItems.filter(a => a.slug !== currentSlug).slice(0, 2);
+      }
+
+      const grid = document.getElementById('relatedNewsGrid');
+      if (!grid) return;
+
+      grid.innerHTML = articles.map(a => `
+        <article class="regional-news-card" onclick="window.location.href='article.html?slug=${a.slug}'" style="cursor:pointer;">
+          <div class="regional-img-box">
+            <img src="${a.featured_image || a.image || 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=400'}" alt="${a.title}" loading="lazy">
+            <span class="card-live-pill">${a.categories?.name || 'हिसार'}</span>
+          </div>
+          <div class="regional-card-content">
+            <span class="regional-category-tag">${a.categories?.name || 'हिसार'}</span>
+            <h4 class="regional-card-title">${a.title}</h4>
+            <div class="regional-card-meta">
+              <span>${formatDate(a.published_at)}</span>
+              <span style="color: var(--brand-red); font-weight: 700;">पूरी खबर ↗</span>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function copyArticleLink() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('लिंक कॉपी किया गया! (Article link copied to clipboard)');
+      });
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('hi-IN', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function getFallbackArticleBySlug(slug) {
+      const samples = [
+        {
+          slug: 'hisar-outer-ring-road-project-approved-2026',
+          title: 'हिसार-रोहतक हाईवे पर नई रिंग रोड परियोजना को मिली मंज़ूरी, 210 एकड़ ज़मीन का अधिग्रहण जल्द',
+          excerpt: 'शहर में भारी वाहनों के जाम से मुक्ति दिलाने के लिए 34 किमी लंबे नए ग्रीनफील्ड कॉरिडोर को अंतिम तकनीकी स्वीकृति मिल गई है।',
+          content: '<p><strong>हिसार:</strong> हिसार शहर में बढ़ते भारी ट्रैफिक और जाम की समस्या से निपटने के लिए बहुप्रतीक्षित आउटर रिंग रोड परियोजना को सरकार से अंतिम तकनीकी व प्रशासनिक मंज़ूरी मिल गई है।</p><p>परियोजना के तहत रोहतक रोड से सिरसा रोड और राजगढ़ बाईपास को जोड़ने वाला 34 किलोमीटर लंबा नया फोर-लेन ग्रीनफील्ड कॉरिडोर तैयार किया जाएगा। इसके लिए लगभग 210 एकड़ भूमि के अधिग्रहण की प्रक्रिया अगले माह से शुरू होगी।</p><p>नगर निगम और पीडब्ल्यूडी अधिकारियों के अनुसार, इस कॉरिडोर के पूरा होने से शहर के अंदर भारी वाहनों का प्रवेश 60% तक कम हो जाएगा। साथ ही, औद्योगिक क्षेत्र और अनाज मंडी तक ट्रकों की सीधी आवाजाही आसान होगी। स्थानीय व्यापार मंडल ने इस फैसले का स्वागत करते हुए कहा कि इससे कारोबार को नई गति मिलेगी।</p>',
+          featured_image: 'https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=1200&q=80',
+          author_name: 'HisarKiAawaj Bureau',
+          categories: { name: 'हिसार विशेष' },
+          published_at: new Date().toISOString()
+        },
+        {
+          slug: 'tragic-student-incident-hisar-oct-2026',
+          title: 'दुखद: पिता ने पढ़ाई के लिए डांटा तो 14 वर्षीय छात्रा ने फंदा लगा दी जान !',
+          excerpt: 'नाबालिग छात्रा ने मानसिक तनाव में उठाया आत्मघाती कदम। पुलिस ने शव का पोस्टमार्टम करा परिजनों को सौंपा।',
+          content: '<p>हिसार के उपनगरीय इलाके में एक दिल दहला देने वाली घटना सामने आई है जहां नौवीं कक्षा की छात्रा ने फांसी का फंदा लगाकर जान दे दी।</p><p>परिजनों के अनुसार परीक्षा में कम अंक आने पर पिता ने पढ़ाई पर ध्यान देने की बात कही थी, जिसके बाद छात्रा ने यह कदम उठाया। पुलिस मामले की जांच कर रही है और परामर्शदाताओं ने अभिभावकों से बच्चों पर अत्यधिक शैक्षणिक दबाव न बनाने की अपील की है।</p>',
+          featured_image: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
+          author_name: 'Crime Desk Hisar',
+          categories: { name: 'क्राइम व जांच' },
+          published_at: new Date(Date.now() - 86400000).toISOString()
+        },
+        {
+          slug: 'desiverse-cultural-music-fest-hisar-2026',
+          title: 'हिसार में सजेगी सुरों की महफ़िल: 24 अक्टूबर को होगा "DESIVERSE" का भव्य आयोजन',
+          excerpt: 'प्रसिद्ध गायक परमीश वर्मा और कई प्रमुख कलाकार बिखेरेंगे जलवा।',
+          content: '<p>हिसार में युवा उत्सव के तहत 24 अक्टूबर को प्रसिद्ध सांस्कृतिक कार्यक्रम "DESIVERSE" का भव्य आयोजन किया जाएगा।</p><p>आयोजकों के अनुसार कार्यक्रम में 10,000 से अधिक दर्शकों के बैठने की व्यवस्था की जा रही है। सुरक्षा के लिए 200 से अधिक पुलिसकर्मी तैनात रहेंगे।</p>',
+          featured_image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
+          author_name: 'Culture Desk',
+          categories: { name: 'लाइफस्टाइल व संस्कृति' },
+          published_at: new Date(Date.now() - 172800000).toISOString()
+        }
+      ];
+      return samples.find(s => s.slug === slug);
+    }
+  </script>
+</body>
+</html>

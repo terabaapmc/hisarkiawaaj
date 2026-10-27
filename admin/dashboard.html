@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | HisarKiAawaj</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Admin Stylesheet -->
+  <link rel="stylesheet" href="admin.css">
+
+  <!-- Supabase JS Client v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../supabase-client.js"></script>
+</head>
+<body>
+
+  <!-- ======================================================================
+       ADMIN SIDEBAR
+       ====================================================================== -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand-box">
+      <div class="sidebar-brand-seal">ह</div>
+      <div>
+        <div class="sidebar-brand-title">HisarKi<span>Aawaj</span></div>
+        <div class="sidebar-brand-badge">EDITORIAL CMS · ADMIN</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-section-title">MAIN MENU</span>
+      <a class="sidebar-nav-btn active" data-view="viewDashboard">
+        <span>📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a class="sidebar-nav-btn" data-view="viewManageNews">
+        <span>📰</span>
+        <span>Manage News</span>
+      </a>
+      <a class="sidebar-nav-btn" data-view="viewArticleEditor" onclick="resetArticleEditor()">
+        <span>✍️</span>
+        <span>Add New Article</span>
+      </a>
+
+      <span class="nav-section-title">ORGANIZATION & ADS</span>
+      <a class="sidebar-nav-btn" data-view="viewCategories">
+        <span>📁</span>
+        <span>Categories</span>
+      </a>
+      <a class="sidebar-nav-btn" data-view="viewAdvertisements">
+        <span>📢</span>
+        <span>Advertisements</span>
+      </a>
+
+      <span class="nav-section-title">SYSTEM & DATABASE</span>
+      <a class="sidebar-nav-btn" data-view="viewSettings">
+        <span>⚙️</span>
+        <span>Settings & Supabase</span>
+      </a>
+      <a href="../index.html" target="_blank" class="sidebar-nav-btn">
+        <span>🌐</span>
+        <span>View Live Website ↗</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-user-info">
+        <div class="admin-name" id="sidebarAdminName">Administrator</div>
+        <div class="admin-role-tag">● Role: Admin</div>
+      </div>
+      <button class="btn-sidebar-logout" id="btnAdminLogout" title="Sign Out">
+        🚪
+      </button>
+    </div>
+  </aside>
+
+  <!-- ======================================================================
+       MAIN CONTENT CONTAINER
+       ====================================================================== -->
+  <div class="admin-main">
+
+    <!-- Topbar -->
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <h2 class="topbar-page-title" id="pageTitleText">Editorial Dashboard</h2>
+        <div class="connection-status-pill" id="supabaseStatusPill">
+          <span class="status-dot"></span>
+          <span id="supabaseStatusText">Checking Supabase...</span>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <a href="../index.html" target="_blank" class="btn-public-site-link">
+          <span>🌐 Public Website</span>
+        </a>
+        <button class="btn-add-primary" onclick="switchToView('viewArticleEditor'); resetArticleEditor();">
+          <span>+ Add New Article</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-content-body">
+
+      <!-- ==================================================================
+           VIEW 1: DASHBOARD OVERVIEW
+           ================================================================== -->
+      <section id="viewDashboard" class="admin-view-panel">
+        <div class="metrics-cards-grid">
+          <div class="metric-card total">
+            <div>
+              <div class="metric-number" id="metricTotalArticles">0</div>
+              <div class="metric-label">Total Articles</div>
+            </div>
+            <div class="metric-icon-box">📚</div>
+          </div>
+
+          <div class="metric-card published">
+            <div>
+              <div class="metric-number" id="metricPublishedArticles">0</div>
+              <div class="metric-label">Published Articles</div>
+            </div>
+            <div class="metric-icon-box">✅</div>
+          </div>
+
+          <div class="metric-card draft">
+            <div>
+              <div class="metric-number" id="metricDraftArticles">0</div>
+              <div class="metric-label">Draft Articles</div>
+            </div>
+            <div class="metric-icon-box">📝</div>
+          </div>
+
+          <div class="metric-card scheduled">
+            <div>
+              <div class="metric-number" id="metricScheduledArticles">0</div>
+              <div class="metric-label">Scheduled Articles</div>
+            </div>
+            <div class="metric-icon-box">🕒</div>
+          </div>
+
+          <div class="metric-card ads">
+            <div>
+              <div class="metric-number" id="metricActiveAds">0</div>
+              <div class="metric-label">Active Ad Slots</div>
+            </div>
+            <div class="metric-icon-box">📢</div>
+          </div>
+        </div>
+
+        <!-- Recent Articles Table in Dashboard -->
+        <div class="content-box-card">
+          <div class="table-filter-bar">
+            <h3 style="font-size: 15px; font-weight: 800; color: var(--text-dark);">Recent Articles (हाल ही में प्रकाशित)</h3>
+            <button class="btn-public-site-link" onclick="switchToView('viewManageNews')">View All Articles &rarr;</button>
+          </div>
+          <div class="data-table-container">
+            <table class="cms-table" id="dashboardRecentTable">
+              <thead>
+                <tr>
+                  <th>Article</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Published Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardRecentTbody">
+                <tr><td colspan="5" style="text-align: center; color: #94a3b8;">Loading recent articles...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 2: MANAGE NEWS (Search, Filter, Table)
+           ================================================================== -->
+      <section id="viewManageNews" class="admin-view-panel" style="display: none;">
+        <div class="content-box-card">
+          <div class="table-filter-bar">
+            <div class="filter-controls-group">
+              <input type="text" id="newsSearchInput" class="search-input-field" placeholder="Search by headline...">
+              
+              <select id="newsStatusFilter" class="filter-select">
+                <option value="">All Statuses</option>
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+                <option value="scheduled">Scheduled</option>
+              </select>
+
+              <select id="newsCategoryFilter" class="filter-select">
+                <option value="">All Categories</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <button class="btn-add-primary" onclick="switchToView('viewArticleEditor'); resetArticleEditor();">
+              <span>+ Add Article</span>
+            </button>
+          </div>
+
+          <div class="data-table-container">
+            <table class="cms-table">
+              <thead>
+                <tr>
+                  <th>Article Headline</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Views</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="manageNewsTbody">
+                <tr><td colspan="6" style="text-align: center; color: #94a3b8;">Loading news articles...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 3: ARTICLE EDITOR (Create / Edit Article)
+           ================================================================== -->
+      <section id="viewArticleEditor" class="admin-view-panel" style="display: none;">
+        <form id="articleEditorForm">
+          <input type="hidden" id="editorArticleId" value="">
+
+          <div class="editor-layout">
+            <!-- Left Primary Form Column -->
+            <div>
+              <div class="content-box-card" style="padding: 24px;">
+                <div class="form-group-block">
+                  <label class="form-label-bold" for="editorTitle">Headline (समाचार शीर्षक) *</label>
+                  <input type="text" id="editorTitle" class="form-control-input title-input-large" placeholder="उदा. हिसार-रोहतक हाईवे नई रिंग रोड परियोजना..." required>
+                </div>
+
+                <div class="form-group-block">
+                  <label class="form-label-bold" for="editorSlug">URL Slug (यूआरएल पहचानकर्ता)</label>
+                  <input type="text" id="editorSlug" class="form-control-input" placeholder="hisar-ring-road-project-2026">
+                  <small style="color: #64748b; font-size: 11px;">Auto-generated from headline if left blank.</small>
+                </div>
+
+                <div class="form-group-block">
+                  <label class="form-label-bold" for="editorExcerpt">Short Summary / Excerpt (संक्षिप्त विवरण)</label>
+                  <textarea id="editorExcerpt" class="form-control-input" rows="3" placeholder="1-2 पंक्तियों का संक्षिप्त परिचय..."></textarea>
+                </div>
+
+                <div class="form-group-block">
+                  <label class="form-label-bold">Full Article Content (विस्तृत समाचार) *</label>
+                  <!-- Rich Text Editor Toolbar -->
+                  <div class="rich-editor-toolbar">
+                    <button type="button" class="btn-editor-tool" onclick="execEditorCommand('bold')"><b>B</b></button>
+                    <button type="button" class="btn-editor-tool" onclick="execEditorCommand('italic')"><i>I</i></button>
+                    <button type="button" class="btn-editor-tool" onclick="execEditorCommand('formatBlock', '<h2>')">H2</button>
+                    <button type="button" class="btn-editor-tool" onclick="execEditorCommand('formatBlock', '<h3>')">H3</button>
+                    <button type="button" class="btn-editor-tool" onclick="execEditorCommand('formatBlock', '<blockquote>')">Quote</button>
+                    <button type="button" class="btn-editor-tool" onclick="execEditorCommand('insertUnorderedList')">• Bullet List</button>
+                    <button type="button" class="btn-editor-tool" onclick="insertEditorLink()">🔗 Link</button>
+                    <button type="button" class="btn-editor-tool" onclick="insertInlineImagePrompt()">🖼️ Insert Image</button>
+                  </div>
+                  <!-- Content Editable Canvas -->
+                  <div id="editorContentCanvas" class="rich-editor-canvas" contenteditable="true"></div>
+                </div>
+              </div>
+
+              <!-- SEO Metadata Accordion -->
+              <div class="content-box-card" style="padding: 20px;">
+                <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 14px; color: var(--text-dark);">🔍 Search Engine Optimization (SEO)</h4>
+                
+                <div class="form-group-block">
+                  <label class="form-label-bold" for="editorSeoTitle">SEO Title</label>
+                  <input type="text" id="editorSeoTitle" class="form-control-input" placeholder="Search engine title...">
+                </div>
+
+                <div class="form-group-block" style="margin-bottom: 0;">
+                  <label class="form-label-bold" for="editorSeoDesc">Meta Description</label>
+                  <textarea id="editorSeoDesc" class="form-control-input" rows="2" placeholder="Search engine description..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Sidebar Configuration Column -->
+            <div>
+              <div class="content-box-card" style="padding: 20px;">
+                <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 14px; color: var(--text-dark);">Publishing Settings</h4>
+
+                <div class="form-group-block">
+                  <label class="form-label-bold" for="editorCategorySelect">Category (श्रेणी) *</label>
+                  <select id="editorCategorySelect" class="form-control-input" required>
+                    <!-- Populated dynamically -->
+                  </select>
+                </div>
+
+                <div class="form-group-block">
+                  <label class="form-label-bold" for="editorStatusSelect">Publication Status</label>
+                  <select id="editorStatusSelect" class="form-control-input">
+                    <option value="draft">Draft (ड्राफ्ट - अप्रकाशित)</option>
+                    <option value="published" selected>Published (सार्वजनिक रूप से प्रकाशित)</option>
+                    <option value="scheduled">Scheduled (निर्धारित समय पर प्रकाशन)</option>
+                  </select>
+                </div>
+
+                <div class="form-group-block" id="editorPublishDateGroup">
+                  <label class="form-label-bold" for="editorPublishDate">Publication Date & Time</label>
+                  <input type="datetime-local" id="editorPublishDate" class="form-control-input">
+                </div>
+
+                <div class="form-group-block">
+                  <label class="form-label-bold" for="editorAuthorName">Author / Reporter Name</label>
+                  <input type="text" id="editorAuthorName" class="form-control-input" value="HisarKiAawaj Bureau">
+                </div>
+
+                <div class="form-group-block">
+                  <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; cursor: pointer;">
+                    <input type="checkbox" id="editorIsFeatured" style="width: 16px; height: 16px;">
+                    <span>⭐ Mark as Featured (Hero Spotlight)</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Featured Image Uploader Card -->
+              <div class="content-box-card" style="padding: 20px;">
+                <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 14px; color: var(--text-dark);">Featured Image (मुख्य छवि)</h4>
+                
+                <div class="image-uploader-dropzone" id="featuredDropzone" onclick="document.getElementById('featuredFileInput').click()">
+                  <div style="font-size: 26px; margin-bottom: 6px;">📁</div>
+                  <div style="font-size: 12px; font-weight: 700; color: var(--brand-red);">Click to Upload from Computer</div>
+                  <div style="font-size: 10px; color: #94a3b8;">Uploaded to Supabase Storage (news-media)</div>
+                  <input type="file" id="featuredFileInput" accept="image/*" style="display: none;">
+                </div>
+
+                <div style="margin: 12px 0 6px; font-size: 11px; text-align: center; color: #94a3b8;">— OR ENTER IMAGE URL —</div>
+                <input type="text" id="editorFeaturedImgUrl" class="form-control-input" placeholder="https://example.com/image.jpg">
+
+                <div class="image-preview-holder" id="featuredImgPreviewHolder" style="display: none;">
+                  <img id="featuredImgPreview" src="" alt="Featured Preview">
+                </div>
+              </div>
+
+              <!-- Actions Box -->
+              <div class="content-box-card" style="padding: 16px;">
+                <button type="submit" class="btn-add-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;" id="btnSaveArticleSubmit">
+                  💾 Save & Publish Article
+                </button>
+                <button type="button" class="btn-public-site-link" style="width: 100%; justify-content: center; margin-top: 8px;" onclick="switchToView('viewManageNews')">
+                  Cancel / Back to List
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 4: CATEGORIES MANAGER
+           ================================================================== -->
+      <section id="viewCategories" class="admin-view-panel" style="display: none;">
+        <div class="content-box-card">
+          <div class="table-filter-bar">
+            <h3 style="font-size: 16px; font-weight: 800;">Manage Categories (समाचार श्रेणियां)</h3>
+            <button class="btn-add-primary" onclick="openAddCategoryModal()">+ Add New Category</button>
+          </div>
+          <div class="data-table-container">
+            <table class="cms-table">
+              <thead>
+                <tr>
+                  <th>Category Name</th>
+                  <th>Slug</th>
+                  <th>Description</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="categoriesTbody">
+                <tr><td colspan="4" style="text-align: center; color: #94a3b8;">Loading categories...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 5: ADVERTISEMENTS MANAGER
+           ================================================================== -->
+      <section id="viewAdvertisements" class="admin-view-panel" style="display: none;">
+        <div class="content-box-card">
+          <div class="table-filter-bar">
+            <div>
+              <h3 style="font-size: 16px; font-weight: 800;">Manage Advertisements (विज्ञापन स्लॉट्स)</h3>
+              <p style="font-size: 12px; color: #64748b; margin-top: 2px;">
+                Control all 6 banner positions across HisarKiAawaj public website.
+              </p>
+            </div>
+            <button class="btn-add-primary" onclick="openAddAdModal()">+ Add New Advertisement</button>
+          </div>
+          <div class="data-table-container">
+            <table class="cms-table">
+              <thead>
+                <tr>
+                  <th>Ad Banner</th>
+                  <th>Placement Slot</th>
+                  <th>Sponsor / Title</th>
+                  <th>Status</th>
+                  <th>Date Range</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="advertisementsTbody">
+                <tr><td colspan="6" style="text-align: center; color: #94a3b8;">Loading advertisements...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 6: SETTINGS & SUPABASE CONFIGURATION
+           ================================================================== -->
+      <section id="viewSettings" class="admin-view-panel" style="display: none;">
+        <div class="content-box-card" style="padding: 24px;">
+          <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 6px; color: var(--text-dark);">⚙️ Supabase Integration & System Settings</h3>
+          <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">
+            Configure and test your Supabase PostgreSQL database, Authentication, and Storage bucket.
+          </p>
+
+          <div style="max-width: 600px;">
+            <div class="form-group-block">
+              <label class="form-label-bold">Supabase Project URL</label>
+              <input type="text" id="settingsSupabaseUrl" class="form-control-input" placeholder="https://xyz.supabase.co">
+            </div>
+
+            <div class="form-group-block">
+              <label class="form-label-bold">Supabase Anon Public Key</label>
+              <input type="text" id="settingsSupabaseKey" class="form-control-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+              <button type="button" class="btn-add-primary" id="btnSaveSettingsKeys">Save Configuration</button>
+              <button type="button" class="btn-public-site-link" id="btnTestSupabaseConnection">Test Live Connection</button>
+            </div>
+          </div>
+
+          <hr style="margin: 28px 0; border: none; border-top: 1px solid var(--border-subtle);">
+
+          <div style="max-width: 700px;">
+            <h4 style="font-size: 15px; font-weight: 800; margin-bottom: 10px;">🛡️ Administrator Setup & Security Checklist</h4>
+            <div style="font-size: 13px; line-height: 1.7; color: var(--text-body);">
+              <p><b>1. Database Migrations:</b> Run <code>schema.sql</code> in your Supabase SQL Editor to create tables, indexes, storage bucket, and strict RLS policies.</p>
+              <p><b>2. Create Your Admin User:</b> Go to Supabase Dashboard &rarr; Authentication &rarr; Users &rarr; Add User (Email & Password).</p>
+              <p><b>3. Grant Administrator Role:</b> In Supabase SQL Editor, run:<br>
+                <code>SELECT public.promote_to_admin('your-email@example.com');</code>
+              </p>
+              <p><b>4. Storage Bucket:</b> The <code>news-media</code> bucket is automatically configured as public for reading images, while writes/deletes are strictly restricted to admins.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL: CONFIRM DELETION
+       ====================================================================== -->
+  <div class="admin-modal-backdrop" id="deleteConfirmModal">
+    <div class="admin-modal-window">
+      <div class="modal-header-bar">
+        <h4 style="font-weight: 800; color: #dc2626;">⚠️ Confirm Deletion</h4>
+        <button class="btn-table-action" onclick="closeDeleteModal()">&times;</button>
+      </div>
+      <div class="modal-body-content">
+        <p id="deleteModalMessage" style="font-size: 14px; line-height: 1.6;">Are you sure you want to permanently delete this record? This action cannot be undone.</p>
+      </div>
+      <div class="modal-actions-footer">
+        <button type="button" class="btn-public-site-link" onclick="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn-add-primary" style="background: #dc2626;" id="btnConfirmDelete">Delete Record</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL: ADD / EDIT ADVERTISEMENT
+       ====================================================================== -->
+  <div class="admin-modal-backdrop" id="adEditorModal">
+    <div class="admin-modal-window" style="max-width: 600px;">
+      <div class="modal-header-bar">
+        <h4 style="font-weight: 800;" id="adModalTitle">Add Advertisement</h4>
+        <button class="btn-table-action" onclick="closeAdModal()">&times;</button>
+      </div>
+      <div class="modal-body-content">
+        <form id="adEditorForm">
+          <input type="hidden" id="adId" value="">
+
+          <div class="form-group-block">
+            <label class="form-label-bold">Campaign Name *</label>
+            <input type="text" id="adName" class="form-control-input" placeholder="e.g. Mahatma Gandhi Cancer Hospital" required>
+          </div>
+
+          <div class="form-group-block">
+            <label class="form-label-bold">Placement Slot *</label>
+            <select id="adPlacement" class="form-control-input" required>
+              <option value="top_leaderboard">Top Leaderboard (970x90) - Header</option>
+              <option value="infeed_between_hero">In-Feed Slot 1 (Between Spotlight & Grid)</option>
+              <option value="infeed_card">In-Feed Native Card (Inside 2-Column Grid)</option>
+              <option value="infeed_between_rows">In-Feed Separator (Between News Rows)</option>
+              <option value="sidebar_carousel">Sidebar Ad Carousel (Right Panel 3/6)</option>
+              <option value="our_clients">Our Clients Showcase (Right Panel)</option>
+              <option value="in_article">In-Article Sponsored Unit</option>
+            </select>
+          </div>
+
+          <div class="form-group-block">
+            <label class="form-label-bold">Ad Banner Image *</label>
+            <input type="file" id="adImageFileInput" accept="image/*" class="form-control-input" style="padding: 6px;">
+            <div style="font-size: 11px; color: #64748b; margin-top: 4px;">OR Enter Image URL:</div>
+            <input type="text" id="adImageUrl" class="form-control-input" placeholder="https://example.com/banner.jpg" style="margin-top: 4px;">
+            <div id="adImagePreviewBox" style="margin-top: 8px; display: none;">
+              <img id="adImagePreview" src="" alt="Ad Preview" style="max-height: 100px; border-radius: 4px;">
+            </div>
+          </div>
+
+          <div class="form-group-block">
+            <label class="form-label-bold">Destination URL / WhatsApp Contact</label>
+            <input type="text" id="adDestinationUrl" class="form-control-input" placeholder="https://wa.me/919896011889 or tel:9896011889">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group-block">
+              <label class="form-label-bold">Sponsor Headline</label>
+              <input type="text" id="adSponsorTitle" class="form-control-input" placeholder="महात्मा गांधी कैंसर इंस्टीट्यूट">
+            </div>
+            <div class="form-group-block">
+              <label class="form-label-bold">CTA Button Text</label>
+              <input type="text" id="adCtaText" class="form-control-input" placeholder="परामर्श लें ↗">
+            </div>
+          </div>
+
+          <div class="form-group-block">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; cursor: pointer;">
+              <input type="checkbox" id="adIsActive" checked style="width: 16px; height: 16px;">
+              <span>Active on Website (सक्रिय विज्ञापन)</span>
+            </label>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button type="button" class="btn-public-site-link" onclick="closeAdModal()">Cancel</button>
+            <button type="submit" class="btn-add-primary">Save Advertisement</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL: ADD / EDIT CATEGORY
+       ====================================================================== -->
+  <div class="admin-modal-backdrop" id="categoryEditorModal">
+    <div class="admin-modal-window">
+      <div class="modal-header-bar">
+        <h4 style="font-weight: 800;" id="categoryModalTitle">Add Category</h4>
+        <button class="btn-table-action" onclick="closeCategoryModal()">&times;</button>
+      </div>
+      <div class="modal-body-content">
+        <form id="categoryEditorForm">
+          <input type="hidden" id="categoryId" value="">
+
+          <div class="form-group-block">
+            <label class="form-label-bold">Category Name (श्रेणी का नाम) *</label>
+            <input type="text" id="categoryName" class="form-control-input" placeholder="उदा. खेल (Sports)" required>
+          </div>
+
+          <div class="form-group-block">
+            <label class="form-label-bold">URL Slug *</label>
+            <input type="text" id="categorySlug" class="form-control-input" placeholder="sports" required>
+          </div>
+
+          <div class="form-group-block">
+            <label class="form-label-bold">Description</label>
+            <textarea id="categoryDescription" class="form-control-input" rows="2" placeholder="Brief description..."></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
+            <button type="button" class="btn-public-site-link" onclick="closeCategoryModal()">Cancel</button>
+            <button type="submit" class="btn-add-primary">Save Category</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

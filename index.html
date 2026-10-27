@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HisarKiAawaj — Authentic regional digital journalism with hybrid Indian Express and Aaj Tak header design and customizable in-between ad slots.">
+  <title>HisarKiAawaj | हिसार की आवाज़ — साहस की पत्रकारिता, शहर की नब्ज़</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       HEADER LAYER 1: Top Network & City Strip (Aaj Tak Inspired)
+       ====================================================================== -->
+  <div class="network-top-strip">
+    <div class="container network-strip-inner">
+      <div class="network-strip-left">
+        <span id="liveDateTimeIst">शनिवार, 17 अक्टूबर 2026 | 00:00 IST</span>
+        <span style="color: var(--border-color);">|</span>
+        <div class="network-cities-list">
+          <a href="category.html?slug=hisar-special" class="city-pill-link highlight">हिसार विशेष</a>
+          <a href="category.html?slug=hisar-special&district=hansi" class="city-pill-link">हांसी</a>
+          <a href="category.html?slug=hisar-special&district=barwala" class="city-pill-link">बरवाला</a>
+          <a href="category.html?slug=hisar-special&district=adampur" class="city-pill-link">आदमपुर</a>
+          <a href="category.html?slug=haryana&district=fatehabad" class="city-pill-link">फतेहाबाद</a>
+          <a href="category.html?slug=haryana&district=sirsa" class="city-pill-link">सिरसा</a>
+          <a href="category.html?slug=haryana&district=bhiwani" class="city-pill-link">भिवानी</a>
+          <a href="category.html?slug=haryana&district=rohtak" class="city-pill-link">रोहतक</a>
+          <a href="category.html?slug=haryana" class="city-pill-link">हरियाणा Tak</a>
+          <a href="category.html?slug=mandi-rates" class="city-pill-link highlight">MandiTak ▾</a>
+        </div>
+      </div>
+
+      <div class="network-strip-right">
+        <button class="city-pill-link" id="langToggleBtn" type="button" style="font-weight: 700;">EN / हिंदी</button>
+        <a href="admin/login.html" class="btn-signin-pill" title="Administrator Login">
+          <span>Admin Login</span>
+          <span>👤</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       HEADER LAYER 2: Grand Indian Express Style Masthead
+       Left: Weather & Date | Center: Prestigious Logo | Right: Ad CTAs
+       ====================================================================== -->
+  <header class="express-masthead">
+    <div class="container express-masthead-inner">
+      <div class="masthead-weather-date">
+        <div class="masthead-weather-row" id="mastheadWeatherWidget" style="cursor: pointer;" title="हिसार मौसम व एक्यूआई रिपोर्ट देखें">
+          <span>☀️ 28°C हिसार (AQI 142 · मध्यम)</span>
+        </div>
+        <div class="masthead-sub-edition">
+          <span>आज का अखबार · HISAR DIGITAL EDITION</span>
+        </div>
+      </div>
+
+      <div class="masthead-center-brand">
+        <a href="index.html" class="express-brand-link" aria-label="HisarKiAawaj Homepage">
+          <div class="express-logo-group">
+            <div class="express-brand-seal">ह</div>
+            <div class="express-brand-text">HisarKi<span>Aawaj</span></div>
+          </div>
+          <div class="express-tagline-motto">साहस की पत्रकारिता · शहर की नब्ज़, आपकी ताक़त</div>
+        </a>
+      </div>
+
+      <div class="masthead-actions-right">
+        <!-- Visible only if authenticated admin -->
+        <a href="admin/dashboard.html" class="btn-ad-manager-pill" title="Open Admin CMS Dashboard">
+          <span>⚙️</span>
+          <span>Admin CMS</span>
+        </a>
+        <!-- Public Advertisement Inquiry Button -->
+        <button class="btn-post-ad-primary" id="btnHeaderPostAd" title="विज्ञापन डेस्क से संपर्क करें">
+          <span>📢</span>
+          <span>विज्ञापन लगाएं</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       HEADER LAYER 3: Deep Navy Main Navigation Bar (Aaj Tak Inspired)
+       Left: Hamburger + Brand Badge | Center: Nav Links | Right: Utilities
+       ====================================================================== -->
+  <nav class="aajtak-navbar" aria-label="Main Navigation">
+    <div class="container aajtak-nav-inner">
+      <div class="nav-left-cluster">
+        <button class="btn-hamburger-toggle" id="mobileMenuBtn" aria-label="Open Menu">☰</button>
+        <a href="index.html" class="aajtak-logo-badge">
+          <span>हिसार की आवाज़</span>
+        </a>
+      </div>
+
+      <div class="aajtak-nav-links">
+        <a href="index.html" class="aajtak-nav-item active">होम</a>
+
+        <!-- Dropdown: Hisar Special -->
+        <div class="nav-item-dropdown">
+          <a href="category.html?slug=hisar-special" class="aajtak-nav-item">हिसार विशेष <span class="chevron-down">▾</span></a>
+          <div class="nav-dropdown-menu">
+            <a href="category.html?slug=hisar-special" class="nav-dropdown-item">सभी हिसार समाचार</a>
+            <a href="category.html?slug=hisar-special&district=hisar-city" class="nav-dropdown-item">हिसार शहर</a>
+            <a href="category.html?slug=hisar-special&district=hansi" class="nav-dropdown-item">हांसी</a>
+            <a href="category.html?slug=hisar-special&district=barwala" class="nav-dropdown-item">बरवाला</a>
+            <a href="category.html?slug=hisar-special&district=adampur" class="nav-dropdown-item">आदमपुर</a>
+            <a href="category.html?slug=hisar-special&district=narnaund" class="nav-dropdown-item">नारनौंद व उकलाना</a>
+          </div>
+        </div>
+
+        <!-- Dropdown: Haryana -->
+        <div class="nav-item-dropdown">
+          <a href="category.html?slug=haryana" class="aajtak-nav-item">हरियाणा <span class="chevron-down">▾</span></a>
+          <div class="nav-dropdown-menu">
+            <a href="category.html?slug=haryana" class="nav-dropdown-item">हरियाणा राज्य मुख्य</a>
+            <a href="category.html?slug=haryana&topic=politics" class="nav-dropdown-item">राजनीति व सरकार</a>
+            <a href="category.html?slug=haryana&topic=administration" class="nav-dropdown-item">प्रशासनिक आदेश</a>
+            <a href="category.html?slug=haryana&district=sirsa" class="nav-dropdown-item">सिरसा-फतेहाबाद</a>
+            <a href="category.html?slug=haryana&district=rohtak" class="nav-dropdown-item">रोहतक-भिवानी</a>
+          </div>
+        </div>
+
+        <a href="category.html?slug=crime" class="aajtak-nav-item">क्राइम व जांच <span class="chevron-down">▾</span></a>
+        <a href="category.html?slug=mandi-rates" class="aajtak-nav-item" style="color: #fbbf24;">मंडी भाव 🔴</a>
+        <a href="category.html?slug=education" class="aajtak-nav-item">शिक्षा-करियर <span class="chevron-down">▾</span></a>
+        <a href="category.html?slug=business" class="aajtak-nav-item">कारोबार <span class="chevron-down">▾</span></a>
+        <a href="category.html?slug=sports" class="aajtak-nav-item">खेल <span class="chevron-down">▾</span></a>
+        <a href="category.html?slug=lifestyle" class="aajtak-nav-item">लाइफस्टाइल</a>
+      </div>
+
+      <div class="aajtak-nav-right-tools">
+        <!-- Edition Selector Dropdown -->
+        <div style="position: relative;">
+          <div class="edition-select-chip" id="editionSelectChip" title="संस्करण चुनें">
+            <span>EDITION</span>
+            <span style="color: #f59e0b;" id="currentEditionLabel">🇮🇳 HISAR ▾</span>
+          </div>
+          <div class="edition-dropdown-menu" id="editionDropdownMenu">
+            <div class="edition-dropdown-item selected" data-edition="hisar">हिसार (Hisar) ✓</div>
+            <div class="edition-dropdown-item" data-edition="hansi">हांसी (Hansi)</div>
+            <div class="edition-dropdown-item" data-edition="fatehabad">फतेहाबाद (Fatehabad)</div>
+            <div class="edition-dropdown-item" data-edition="sirsa">सिरसा (Sirsa)</div>
+            <div class="edition-dropdown-item" data-edition="bhiwani">भिवानी (Bhiwani)</div>
+            <div class="edition-dropdown-item" data-edition="rohtak">रोहतक (Rohtak)</div>
+            <div class="edition-dropdown-item" data-edition="chandigarh">चंडीगढ़ (State Capital)</div>
+          </div>
+        </div>
+
+        <!-- E-paper icon -->
+        <button class="tool-icon-btn" id="ePaperBtn" title="HisarKiAawaj ई-पेपर संस्करण">
+          <span>📰</span>
+        </button>
+
+        <!-- AQI Widget -->
+        <button class="tool-icon-btn" id="aqiBtn" title="वायु गुणवत्ता सूचकांक हिसार">
+          <span>🍃 AQI 142</span>
+        </button>
+
+        <!-- Notification Bell with counter -->
+        <button class="tool-icon-btn" id="notificationsBtn" title="ताज़ा ब्रेकिंग अलर्ट्स">
+          <span>🔔</span>
+          <span class="alert-counter-badge">3</span>
+        </button>
+
+        <!-- Live TV red badge button -->
+        <button class="btn-live-tv-aajtak" id="liveTvBtn" title="लाइव वीडियो बुलेटिन देखें">
+          <span>LIVE</span>
+          <span>📺</span>
+        </button>
+
+        <!-- Search button -->
+        <button class="tool-icon-btn" id="headerSearchBtn" title="समाचार खोजें">
+          <span>🔍</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======================================================================
+       HEADER LAYER 4: Red BREAKING NEWS Bar (Aaj Tak Style Capsule)
+       ====================================================================== -->
+  <div class="container aajtak-breaking-container" id="breakingNewsContainer">
+    <div class="aajtak-breaking-bar">
+      <span class="breaking-title-label">BREAKING NEWS</span>
+      <div class="breaking-story-text" id="breakingTickerText" style="cursor: pointer;">
+        हिसार-रोहतक हाईवे पर नई रिंग रोड परियोजना को मिली मंज़ूरी, 210 एकड़ ज़मीन का अधिग्रहण अगले माह से होगा शुरू
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="btn-pause-breaking" id="btnPauseBreaking" title="Pause / Play" style="color: #fff; font-size: 11px;">⏸</button>
+        <button class="btn-close-breaking" id="btnCloseBreaking" title="Dismiss">&times;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       HEADER LAYER 5: Trending Topic Pills Carousel (Aaj Tak Style)
+       ====================================================================== -->
+  <div class="container trending-topics-section">
+    <div class="trending-slider-box">
+      <button class="slider-nav-arrow" id="btnTrendPrev" title="Scroll left">‹</button>
+      <div class="trending-pills-row" id="trendingPillsRow">
+        <a href="search.html?q=रिंग+रोड" class="topic-pill">#हिसार रिंग रोड</a>
+        <a href="category.html?slug=mandi-rates" class="topic-pill" style="border-color: #f59e0b; color: #b45309;">#सरसों ₹5450 मंडी भाव</a>
+        <a href="search.html?q=एयरपोर्ट" class="topic-pill">#हिसार एयरपोर्ट उड़ानें</a>
+        <a href="search.html?q=अस्पताल" class="topic-pill">#सिविल अस्पताल 50 बेड ICU</a>
+        <a href="search.html?q=DESIVERSE" class="topic-pill">#DESIVERSE 24 Oct</a>
+        <a href="search.html?q=रॉयल+एनफील्ड" class="topic-pill">#मलिक रॉयल एनफील्ड</a>
+        <a href="search.html?q=कैंसर+अस्पताल" class="topic-pill">#महात्मा गांधी कैंसर अस्पताल</a>
+        <a href="search.html?q=GJU" class="topic-pill">#GJU एआई कोर्सेज</a>
+        <a href="search.html?q=मौसम" class="topic-pill">#हरियाणा मौसम अपडेट</a>
+        <a href="search.html?q=पुलिस" class="topic-pill">#हिसार पुलिस जांच</a>
+      </div>
+      <button class="slider-nav-arrow" id="btnTrendNext" title="Scroll right">›</button>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       CUSTOM AD SLOT #1: Top Leaderboard (970x90 / 728x90)
+       ====================================================================== -->
+  <div class="container custom-ad-slot-container" id="adSlotTopLeaderboard">
+    <div class="ad-slot-header">
+      <span class="ad-slot-label">शीर्ष लीडरबोर्ड विज्ञापन · ADVERTISEMENT (970x90)</span>
+      <button class="btn-edit-ad-slot" onclick="openAdManagerForSlot('adSlotTopLeaderboard')">
+        ✏️ Change Ad Image
+      </button>
+    </div>
+    <a href="tel:9992487111" class="ad-banner-link" target="_blank" rel="noopener">
+      <div class="ad-visual-card cancer-hospital">
+        <div>
+          <span class="ad-badge-tiny">HEALTHCARE PARTNER · HISAR</span>
+          <h4 class="ad-visual-title">महात्मा गांधी इंस्टीट्यूट ऑफ मेडिकल साइंसेज हिसार</h4>
+          <p class="ad-visual-subtitle">AIIMS दिल्ली व टाटा मेमोरियल अस्पताल मुंबई से प्रशिक्षित, सुप्रसिद्ध कैंसर रोग विशेषज्ञ डॉ. रमेश बिश्नोई · 99924-87111</p>
+        </div>
+        <span class="ad-cta-pill-white">परामर्श लें ↗</span>
+      </div>
+    </a>
+  </div>
+
+  <main class="container">
+
+    <!-- ====================================================================
+         MANDI BHAV LIVE STRIP (Aaj Tak / Krishi Tak Style Widget)
+         ==================================================================== -->
+    <section class="mandi-section-container">
+      <div class="mandi-header-row">
+        <div class="mandi-title-badge">
+          <span style="color: #f59e0b; font-size: 20px;">🌾</span>
+          <span>हिसार व हरियाणा कृषि अनाज मंडी दैनिक भाव (Daily Mandi Rates)</span>
+          <span style="font-size: 11px; background: #fef3c7; color: #b45309; padding: 2px 8px; border-radius: 999px; font-weight: 800;">LIVE IST</span>
+        </div>
+        <a href="category.html?slug=mandi-rates" class="city-pill-link highlight" style="font-size: 12px; font-weight: 800;">सभी मंडियों के भाव देखें ↗</a>
+      </div>
+      <div class="mandi-cards-carousel">
+        <div class="mandi-rate-card">
+          <div class="mandi-crop-name">सरसों (Mustard 42% तेल)</div>
+          <div class="mandi-crop-price">₹5,450 / क्विंटल</div>
+          <div class="mandi-crop-trend up">▲ ₹40 (कल से उछाल)</div>
+        </div>
+        <div class="mandi-rate-card">
+          <div class="mandi-crop-name">नरमा / कपास (BT Cotton)</div>
+          <div class="mandi-crop-price">₹7,120 / क्विंटल</div>
+          <div class="mandi-crop-trend up">▲ ₹80 (मजबूत मांग)</div>
+        </div>
+        <div class="mandi-rate-card">
+          <div class="mandi-crop-name">गेहूं (Wheat शरबती)</div>
+          <div class="mandi-crop-price">₹2,420 / क्विंटल</div>
+          <div class="mandi-crop-trend up">▲ ₹15 (स्थिर)</div>
+        </div>
+        <div class="mandi-rate-card">
+          <div class="mandi-crop-name">ग्वार (Guar Seed)</div>
+          <div class="mandi-crop-price">₹5,180 / क्विंटल</div>
+          <div class="mandi-crop-trend down">▼ ₹25 (हल्की नरमी)</div>
+        </div>
+        <div class="mandi-rate-card">
+          <div class="mandi-crop-name">बासमती 1509 धान</div>
+          <div class="mandi-crop-price">₹3,350 / क्विंटल</div>
+          <div class="mandi-crop-trend up">▲ ₹50 (आवक तेज)</div>
+        </div>
+        <div class="mandi-rate-card">
+          <div class="mandi-crop-name">चना देशी (Gram)</div>
+          <div class="mandi-crop-price">₹6,100 / क्विंटल</div>
+          <div class="mandi-crop-trend up">▲ ₹30 (स्थिर)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         MAIN EDITORIAL CONTENT STREAM + SIDEBAR
+         ==================================================================== -->
+    <div class="main-content-layout">
+
+      <!-- LEFT STREAM (News Cards + In-Between Custom Ads) -->
+      <section class="news-stream-column">
+
+        <!-- 1. SPOTLIGHT CARD (With authentic on-image sponsor badge) -->
+        <article class="spotlight-news-card" onclick="window.location.href='article.html?slug=hisar-outer-ring-road-project-approved-2026'" style="cursor: pointer;">
+          <div class="spotlight-image-holder">
+            <img src="https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=1200&q=80" alt="Spotlight News" class="spotlight-img">
+            <div class="spotlight-overlay"></div>
+            <span class="spotlight-kicker-tag">आज की बड़ी खबर</span>
+
+            <!-- On-Image Sponsor Banner (from Screenshot 2 "MALIK AUTOMOBILES") -->
+            <div class="on-image-sponsor-badge">
+              <span>SPONSORED BY: <b>MALIK AUTOMOBILES — ROYAL ENFIELD HISAR</b></span>
+              <span style="font-size: 10px; opacity: 0.9;">त्योहारी सीजन पर विशेष एक्सचेंज ऑफर · राजगुरु मार्केट</span>
+            </div>
+          </div>
+          <div class="spotlight-body">
+            <h2 class="spotlight-headline">हिसार-रोहतक हाईवे पर नई रिंग रोड परियोजना को मिली मंज़ूरी, 210 एकड़ ज़मीन का अधिग्रहण जल्द</h2>
+            <p class="spotlight-excerpt">शहर में भारी वाहनों के जाम से मुक्ति दिलाने के लिए 34 किमी लंबे नए ग्रीनफील्ड कॉरिडोर को अंतिम तकनीकी स्वीकृति मिल गई है। स्थानीय व्यापार मंडल ने इस फैसले का स्वागत किया है।</p>
+            <div class="spotlight-meta-footer">
+              <span>Nagar/Hisar Desk · स्थानीय ब्यूरो</span>
+              <span>🕒 2 घंटे पहले · 4 min read</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- ==================================================================
+             CUSTOM AD SLOT #2: Between Spotlight and News Grid (Full Width Banner)
+             ================================================================== -->
+        <div class="custom-ad-slot-container" id="adSlotBetweenHeroAndGrid">
+          <div class="ad-slot-header">
+            <span class="ad-slot-label">पोस्ट के बीच विज्ञापन स्लॉट-1 · IN-FEED AD BANNER</span>
+            <button class="btn-edit-ad-slot" onclick="openAdManagerForSlot('adSlotBetweenHeroAndGrid')">
+              ✏️ Place Custom Ad Image Here
+            </button>
+          </div>
+          <a href="tel:01662200000" class="ad-banner-link" target="_blank" rel="noopener">
+            <div class="ad-visual-card royal-enfield">
+              <div>
+                <span class="ad-badge-tiny">AUTOMOTIVE SPONSOR · HISAR</span>
+                <h4 class="ad-visual-title">MALIK AUTOMOBILES — ROYAL ENFIELD HISAR</h4>
+                <p class="ad-visual-subtitle">बुलेट, हंटर व क्लासिक 350 पर आकर्षक फेस्टिव फाइनेंस व 0% प्रोसेसिंग फीस ऑफर · दिल्ली रोड, हिसार</p>
+              </div>
+              <span class="ad-cta-pill-white">टेस्ट राइड बुक करें ↗</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- 2. REGIONAL 2-COLUMN NEWS GRID (Clickable to full articles) -->
+        <div class="regional-news-grid" id="hisarNewsGrid">
+
+          <!-- Post 1 (Crime / Tragic Incident) -->
+          <article class="regional-news-card" onclick="window.location.href='article.html?slug=tragic-student-incident-hisar-oct-2026'" style="cursor: pointer;">
+            <div class="regional-img-box">
+              <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80" alt="News Incident" loading="lazy">
+              <span class="card-live-pill">LIVE BREAKING NEWS</span>
+            </div>
+            <div class="regional-card-content">
+              <span class="regional-category-tag">CRIME, HEALTH, LIFESTYLE, TOP NEWS</span>
+              <h3 class="regional-card-title">दुखद: पिता ने पढ़ाई के लिए डांटा तो 14 वर्षीय छात्रा ने फंदा लगा दी जान !</h3>
+              <div class="regional-card-meta">
+                <span>अक्टूबर 13, 2026</span>
+                <span style="color: var(--brand-red); font-weight: 700;">पूरी खबर ↗</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 2 (Domestic Dispute Incident) -->
+          <article class="regional-news-card" onclick="window.location.href='article.html?slug=wife-husband-dispute-investigation-oct-2026'" style="cursor: pointer;">
+            <div class="regional-img-box">
+              <img src="https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=600&q=80" alt="Police Investigation" loading="lazy">
+              <span class="card-live-pill">LIVE BREAKING NEWS</span>
+            </div>
+            <div class="regional-card-content">
+              <span class="regional-category-tag">CRIME, HEALTH, LIFESTYLE, TOP NEWS</span>
+              <h3 class="regional-card-title">पारिवारिक कलह में पत्नी ने बेलन, चिमटे से पीट फिर गला दबा की पति की हत्या !</h3>
+              <div class="regional-card-meta">
+                <span>अक्टूबर 12, 2026</span>
+                <span style="color: var(--brand-red); font-weight: 700;">पूरी खबर ↗</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 3 (Cultural Event) -->
+          <article class="regional-news-card" onclick="window.location.href='article.html?slug=desiverse-cultural-music-fest-hisar-2026'" style="cursor: pointer;">
+            <div class="regional-img-box">
+              <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" alt="Music Concert" loading="lazy">
+              <span class="card-live-pill" style="background: #2563eb;">EVENT SPOTLIGHT</span>
+            </div>
+            <div class="regional-card-content">
+              <span class="regional-category-tag">CULTURE, MUSIC, ENTERTAINMENT</span>
+              <h3 class="regional-card-title">हिसार में सजेगी सुरों की महफ़िल: 24 अक्टूबर को होगा "DESIVERSE" का भव्य आयोजन, परमीश वर्मा बिखेरेंगे जलवा</h3>
+              <div class="regional-card-meta">
+                <span>अक्टूबर 11, 2026</span>
+                <span style="color: var(--brand-red); font-weight: 700;">पूरी खबर ↗</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ================================================================
+               CUSTOM AD SLOT #3: In-Feed Native Card Ad (Inside 2-Column Grid)
+               ================================================================ -->
+          <div class="infeed-card-ad" id="adSlotInfeedCard">
+            <div class="ad-slot-header" style="margin-bottom: 8px;">
+              <span class="ad-slot-label" style="color: var(--gold-accent);">⭐ प्रायोजित कार्ड · IN-FEED CARD AD</span>
+              <button class="btn-edit-ad-slot" onclick="openAdManagerForSlot('adSlotInfeedCard')">
+                ✏️ Change Ad
+              </button>
+            </div>
+            <a href="tel:9896011889" class="ad-banner-link" target="_blank" rel="noopener">
+              <div class="ad-visual-card homeopathic" style="padding: 14px; min-height: 140px;">
+                <div>
+                  <span class="ad-badge-tiny">LOCAL CLINIC</span>
+                  <h4 class="ad-visual-title" style="font-size: 15px;">जुनेजा होम्योपैथिक क्लिनिक</h4>
+                  <p class="ad-visual-subtitle">सेक्टर 14, हिसार · पुराना चर्म रोग व एलर्जी का स्थायी समाधान</p>
+                </div>
+                <span class="ad-cta-pill-white">परामर्श ↗</span>
+              </div>
+            </a>
+            <div style="font-size: 10px; color: var(--text-muted); margin-top: 8px; text-align: center;">
+              फोन: 98960-11889 · समय: सुबह 10:30 से शाम 7 बजे
+            </div>
+          </div>
+
+          <!-- Post 4 (Labor/Civil Story) -->
+          <article class="regional-news-card" onclick="window.location.href='article.html?slug=unpaid-salary-employee-case-oct-2026'" style="cursor: pointer;">
+            <div class="regional-img-box">
+              <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=600&q=80" alt="Worker Protest" loading="lazy">
+              <span class="card-live-pill">LIVE BREAKING NEWS</span>
+            </div>
+            <div class="regional-card-content">
+              <span class="regional-category-tag">CRIME, CIVIC, LABOUR</span>
+              <h3 class="regional-card-title">8 महीनो से तनख्वाह ना मिलने से परेशान कर्मचारी ने फांसी लगा दी जान, ट्रांसपोर्टर पर केस दर्ज !</h3>
+              <div class="regional-card-meta">
+                <span>अक्टूबर 10, 2026</span>
+                <span style="color: var(--brand-red); font-weight: 700;">पूरी खबर ↗</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 5 (Civic Action) -->
+          <article class="regional-news-card" onclick="window.location.href='article.html?slug=municipal-unauthorized-construction-ban-oct-2026'" style="cursor: pointer;">
+            <div class="regional-img-box">
+              <img src="https://images.unsplash.com/photo-1575505586569-646b2ca898fc?auto=format&fit=crop&w=600&q=80" alt="Civic Action" loading="lazy">
+            </div>
+            <div class="regional-card-content">
+              <span class="regional-category-tag">MUNICIPAL & INFRASTRUCTURE</span>
+              <h3 class="regional-card-title">अवैध कॉलोनियों को लेकर नगर निगम की सख्त कार्रवाई, 14 निर्माण कार्यों पर रोक के आदेश</h3>
+              <div class="regional-card-meta">
+                <span>अक्टूबर 09, 2026</span>
+                <span style="color: var(--brand-red); font-weight: 700;">पूरी खबर ↗</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- ==================================================================
+             CUSTOM AD SLOT #4: In-Between News Rows Separator Banner
+             ================================================================== -->
+        <div class="custom-ad-slot-container" id="adSlotBetweenNewsRows">
+          <div class="ad-slot-header">
+            <span class="ad-slot-label">पोस्ट के बीच विज्ञापन स्लॉट-2 · IN-FEED SEPARATOR (728x120)</span>
+            <button class="btn-edit-ad-slot" onclick="openAdManagerForSlot('adSlotBetweenNewsRows')">
+              ✏️ Place Custom Ad Image Here
+            </button>
+          </div>
+          <a href="tel:9812000000" class="ad-banner-link" target="_blank" rel="noopener">
+            <div class="ad-visual-card plastic-surgery">
+              <div>
+                <span class="ad-badge-tiny">SURGICAL & COSMETIC SPECIALITY</span>
+                <h4 class="ad-visual-title">SONI BURN & PLASTIC SURGERY HOSPITAL HISAR</h4>
+                <p class="ad-visual-subtitle">Sudarshan Medspa · डॉ. सुनील सोनी · बर्न केयर, हेयर ट्रांसप्लांट व आधुनिक लेजर सर्जरी · मॉडल टाउन हिसार</p>
+              </div>
+              <span class="ad-cta-pill-white">कॉल करें: 98120-XXXXX ↗</span>
+            </div>
+          </a>
+        </div>
+
+      </section>
+
+      <!-- RIGHT SIDEBAR: Custom Ads, Carousel, Our Clients, WhatsApp -->
+      <aside class="sidebar-column">
+
+        <!-- SIDEBAR CUSTOM AD CAROUSEL -->
+        <div class="sidebar-ad-card" id="adSlotSidebarCarousel">
+          <div class="sidebar-ad-carousel-top">
+            <span class="ad-slot-label">प्रायोजित विज्ञापन · SPONSORED</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="carousel-nav-btn" id="sidebarCarouselPrev" title="Previous Ad">❮</button>
+              <span class="carousel-counter" id="sidebarCarouselCounter">3/6</span>
+              <button class="carousel-nav-btn" id="sidebarCarouselNext" title="Next Ad">❯</button>
+            </div>
+          </div>
+
+          <a href="tel:9896011889" id="sidebarAdBannerLink" class="sidebar-ad-banner-link" target="_blank" rel="noopener">
+            <!-- Dynamic Content populated by app.js -->
+          </a>
+
+          <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 10px; color: var(--text-light);">विज्ञापन संख्या 3/6</span>
+            <button class="btn-edit-ad-slot" onclick="openAdManagerForSlot('adSlotSidebarCarousel')">
+              ✏️ Change Ad Image
+            </button>
+          </div>
+        </div>
+
+        <!-- "OUR CLIENTS / हमारे स्थानीय प्रायोजक" -->
+        <div class="our-clients-panel" id="adSlotOurClients">
+          <div class="panel-heading-row">
+            <h3 class="panel-title">Our Clients / हमारे प्रायोजक</h3>
+            <button class="btn-edit-ad-slot" onclick="openAdManagerForSlot('adSlotOurClients')">
+              ✏️ Add / Edit
+            </button>
+          </div>
+
+          <div class="clients-ad-grid">
+            <!-- Client Ad 1: Mahatma Gandhi Cancer Hospital -->
+            <div class="client-ad-item">
+              <a href="tel:9992487111" class="ad-visual-card cancer-hospital" style="padding: 12px; min-height: 85px; display: block;">
+                <div>
+                  <h5 style="font-size: 13px; font-weight: 800;">महात्मा गांधी कैंसर इंस्टीट्यूट</h5>
+                  <p style="font-size: 10px; opacity: 0.9;">डॉ. रमेश बिश्नोई · फोन: 99924-87111</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- Client Ad 2: Soni Hospital -->
+            <div class="client-ad-item">
+              <a href="tel:9812000000" class="ad-visual-card plastic-surgery" style="padding: 12px; min-height: 85px; display: block;">
+                <div>
+                  <h5 style="font-size: 13px; font-weight: 800;">सोनी बर्न एवं प्लास्टिक सर्जरी हॉस्पिटल</h5>
+                  <p style="font-size: 10px; opacity: 0.9;">सुदर्शन मेडस्पा, मॉडल टाउन हिसार</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- Client Ad 3: Malik Automobiles -->
+            <div class="client-ad-item">
+              <a href="tel:01662200000" class="ad-visual-card royal-enfield" style="padding: 12px; min-height: 85px; display: block;">
+                <div>
+                  <h5 style="font-size: 13px; font-weight: 800;">मलिक ऑटोमोबाइल्स रॉयल एनफील्ड</h5>
+                  <p style="font-size: 10px; opacity: 0.9;">दिल्ली रोड, हिसार</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- WHATSAPP COMMUNITY CARD -->
+        <div class="whatsapp-community-box">
+          <div style="font-size: 26px; margin-bottom: 6px;">💬</div>
+          <h4 class="wa-box-title">हरियाणा व हिसार की खबरों को व्हाट्सएप पर पढ़ें</h4>
+          <p class="wa-box-desc">ताज़ा स्थानीय खबरें, मंडी भाव और ब्रेकिंग अलर्ट्स सीधे अपने फ़ोन पर प्राप्त करने के लिए हमारे ग्रुप में शामिल हों।</p>
+          <a href="https://wa.me/?text=Hello%20HisarKiAawaj%2C%20please%20add%20me%20to%20the%20Hisar%20News%20Group." target="_blank" rel="noopener" class="btn-join-wa-green">
+            <span>JOIN OUR GROUP ↗</span>
+          </a>
+        </div>
+
+        <!-- LIVE VISITOR HITS COUNTER -->
+        <div class="live-visitor-box">
+          <span class="visitor-label-text">पाठक संख्या (VISITORS)</span>
+          <span class="visitor-count-number" id="visitorCounterHits">2,095,309 hits</span>
+        </div>
+
+      </aside>
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       MOBILE OFF-CANVAS NAVIGATION DRAWER
+       ====================================================================== -->
+  <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+  <div class="mobile-nav-drawer" id="mobileNavDrawer">
+    <div class="mobile-drawer-header">
+      <div class="express-brand-text" style="color: #fff; font-size: 24px;">HisarKi<span style="color: var(--brand-red);">Aawaj</span></div>
+      <span class="mobile-drawer-close" id="mobileDrawerCloseBtn">&times;</span>
+    </div>
+    <div class="mobile-drawer-search">
+      <input type="text" id="mobileSearchInput" class="mobile-drawer-search-input" placeholder="समाचार खोजें... (Search news)">
+    </div>
+    <div class="mobile-drawer-links">
+      <a href="index.html" class="mobile-drawer-link active"><span>होम (Home)</span><span>🏠</span></a>
+      <a href="category.html?slug=hisar-special" class="mobile-drawer-link"><span>हिसार विशेष</span><span>›</span></a>
+      <a href="category.html?slug=haryana" class="mobile-drawer-link"><span>हरियाणा राज्य</span><span>›</span></a>
+      <a href="category.html?slug=crime" class="mobile-drawer-link"><span>क्राइम व जांच</span><span>›</span></a>
+      <a href="category.html?slug=mandi-rates" class="mobile-drawer-link" style="color: #b45309;"><span>मंडी भाव बुलेटिन 🔴</span><span>🌾</span></a>
+      <a href="category.html?slug=education" class="mobile-drawer-link"><span>शिक्षा व करियर</span><span>›</span></a>
+      <a href="category.html?slug=business" class="mobile-drawer-link"><span>कारोबार व बाजार</span><span>›</span></a>
+      <a href="category.html?slug=sports" class="mobile-drawer-link"><span>खेल समाचार</span><span>›</span></a>
+      <a href="category.html?slug=lifestyle" class="mobile-drawer-link"><span>लाइफस्टाइल व संस्कृति</span><span>›</span></a>
+      <a href="admin/login.html" class="mobile-drawer-link" style="color: var(--brand-red);"><span>व्यवस्थापक लॉगिन (Admin Login)</span><span>👤</span></a>
+    </div>
+    <div class="mobile-drawer-districts">
+      <div class="mobile-districts-title">हरियाणा के प्रमुख शहर (Districts)</div>
+      <div class="mobile-districts-grid">
+        <a href="category.html?slug=hisar-special&district=hansi" class="mobile-district-chip">हांसी</a>
+        <a href="category.html?slug=hisar-special&district=barwala" class="mobile-district-chip">बरवाला</a>
+        <a href="category.html?slug=hisar-special&district=adampur" class="mobile-district-chip">आदमपुर</a>
+        <a href="category.html?slug=haryana&district=fatehabad" class="mobile-district-chip">फतेहाबाद</a>
+        <a href="category.html?slug=haryana&district=sirsa" class="mobile-district-chip">सिरसा</a>
+        <a href="category.html?slug=haryana&district=bhiwani" class="mobile-district-chip">भिवानी</a>
+        <a href="category.html?slug=haryana&district=rohtak" class="mobile-district-chip">रोहतक</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       INTERACTIVE PUBLIC MODALS
+       ====================================================================== -->
+
+  <!-- 1. LIVE TV / BULLETIN MODAL -->
+  <div class="public-modal-backdrop" id="liveTvModal">
+    <div class="public-modal-box">
+      <div class="public-modal-header" style="background: #dc2626;">
+        <div class="public-modal-title">
+          <span>🔴</span>
+          <span>HisarKiAawaj Live Bulletin — सीधा प्रसारण</span>
+        </div>
+        <span class="public-modal-close" id="closeLiveTvModal">&times;</span>
+      </div>
+      <div class="public-modal-body">
+        <div style="background: #000; border-radius: 8px; height: 260px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; position: relative; overflow: hidden; margin-bottom: 16px;">
+          <div style="font-size: 48px; opacity: 0.8; margin-bottom: 8px;">📺</div>
+          <div style="font-weight: 800; font-size: 16px;">हिसार आज की ताज़ा हेडलाइंस बुलेटिन</div>
+          <div style="font-size: 12px; color: #ef4444; margin-top: 4px; display: flex; align-items: center; gap: 6px;">
+            <span style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%; display: inline-block;"></span>
+            <span>LIVE STREAM CONNECTED · 1080p HD</span>
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(220, 38, 38, 0.9); padding: 6px 12px; font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden;">
+            🔴 ब्रेकिंग: हिसार आउटर रिंग रोड परियोजना को मिली कैबिनेट की मंजूरी · 210 एकड़ जमीन का होगा अधिग्रहण
+          </div>
+        </div>
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+          हिसार की आवाज़ का डिजिटल स्टूडियो रोज़ाना सुबह 8 बजे और शाम 7 बजे प्रसारित करता है शहर का सबसे तेज़, निष्पक्ष और विश्वसनीय वीडियो बुलेटिन।
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. E-PAPER MODAL -->
+  <div class="public-modal-backdrop" id="ePaperModal">
+    <div class="public-modal-box">
+      <div class="public-modal-header">
+        <div class="public-modal-title">
+          <span>📰</span>
+          <span>HisarKiAawaj Digital E-Paper · आज का अखबार</span>
+        </div>
+        <span class="public-modal-close" id="closeEPaperModal">&times;</span>
+      </div>
+      <div class="public-modal-body">
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 16px;">
+          <div style="font-size: 50px; margin-bottom: 10px;">🗞️</div>
+          <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">हिसार एडिशन — 17 अक्टूबर 2026</h4>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">कुल पृष्ठ: 12 · हाई-डेफिनिशन डिजिटल PDF संस्करण</p>
+          <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="btn-post-ad-primary" onclick="showNotification('ई-पेपर पृष्ठ 1 लोड हो रहा है...')">
+              ऑनलाइन पढ़ें ↗
+            </button>
+            <button class="btn-load-more" onclick="showNotification('PDF डाउनलोड शुरू हो रहा है...')">
+              डाउनलोड PDF ⬇
+            </button>
+          </div>
+        </div>
+        <div style="font-size: 12px; color: var(--text-muted);">
+          <strong>नोट:</strong> हिसार की आवाज़ का ई-पेपर प्रतिदिन सुबह 5:30 बजे सभी पंजीकृत पाठकों और व्हाट्सएप ग्रुप्स में निःशुल्क उपलब्ध कराया जाता है।
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. AIR QUALITY & WEATHER MODAL -->
+  <div class="public-modal-backdrop" id="weatherAqiModal">
+    <div class="public-modal-box">
+      <div class="public-modal-header">
+        <div class="public-modal-title">
+          <span>🍃</span>
+          <span>हिसार मौसम व वायु गुणवत्ता (Air Quality Index)</span>
+        </div>
+        <span class="public-modal-close" id="closeWeatherModal">&times;</span>
+      </div>
+      <div class="public-modal-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+          <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center;">
+            <div style="font-size: 32px;">☀️</div>
+            <div style="font-size: 24px; font-weight: 900; margin: 4px 0;">28°C</div>
+            <div style="font-size: 12px; color: var(--text-muted);">हिसार शहर (तापमान)</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">आर्द्रता: 48% · हवा: 10 किमी/घंटा</div>
+          </div>
+          <div style="background: #fef8ee; border: 1px solid #fed7aa; border-radius: 8px; padding: 14px; text-align: center;">
+            <div style="font-size: 32px;">🍃</div>
+            <div style="font-size: 24px; font-weight: 900; color: #b45309; margin: 4px 0;">AQI 142</div>
+            <div style="font-size: 12px; font-weight: 800; color: #b45309;">मध्यम (Moderate)</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">PM2.5: 58 µg/m³ · PM10: 112 µg/m³</div>
+          </div>
+        </div>
+        <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 12px 16px; border-radius: 4px; font-size: 12px; color: #1e3a8a;">
+          <strong>स्वास्थ्य परामर्श:</strong> श्वसन या अस्थमा के संवेदनशील व्यक्तियों को सुबह के समय खुले में भारी व्यायाम से बचने की सलाह दी जाती है।
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. ALERTS / NOTIFICATIONS MODAL -->
+  <div class="public-modal-backdrop" id="notificationsModal">
+    <div class="public-modal-box">
+      <div class="public-modal-header">
+        <div class="public-modal-title">
+          <span>🔔</span>
+          <span>ताज़ा समाचार अलर्ट्स (Live News Alerts)</span>
+        </div>
+        <span class="public-modal-close" id="closeNotificationsModal">&times;</span>
+      </div>
+      <div class="public-modal-body">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <a href="article.html?slug=hisar-outer-ring-road-project-approved-2026" style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; display: block; background: #fff1f2;">
+            <span style="font-size: 10px; background: var(--brand-red); color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 800;">ताज़ा अलर्ट</span>
+            <h5 style="font-size: 13px; font-weight: 800; margin: 6px 0 2px;">हिसार रिंग रोड: 210 एकड़ जमीन का अधिग्रहण अगले माह से होगा शुरू</h5>
+            <span style="font-size: 11px; color: var(--text-muted);">15 मिनट पहले</span>
+          </a>
+          <a href="category.html?slug=mandi-rates" style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; display: block; background: #fef8ee;">
+            <span style="font-size: 10px; background: #f59e0b; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 800;">मंडी अपडेट</span>
+            <h5 style="font-size: 13px; font-weight: 800; margin: 6px 0 2px;">हिसार अनाज मंडी में सरसों का भाव ₹5,450 प्रति क्विंटल पहुंचा</h5>
+            <span style="font-size: 11px; color: var(--text-muted);">1 घंटा पहले</span>
+          </a>
+          <a href="article.html?slug=desiverse-cultural-music-fest-hisar-2026" style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; display: block;">
+            <span style="font-size: 10px; background: #2563eb; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 800;">इवेंट</span>
+            <h5 style="font-size: 13px; font-weight: 800; margin: 6px 0 2px;">महावीर स्टेडियम में 24 अक्टूबर को DESIVERSE का भव्य संगीत महोत्सव</h5>
+            <span style="font-size: 11px; color: var(--text-muted);">3 घंटे पहले</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. SEARCH OVERLAY MODAL -->
+  <div class="public-modal-backdrop" id="searchModal">
+    <div class="public-modal-box">
+      <div class="public-modal-header">
+        <div class="public-modal-title">
+          <span>🔍</span>
+          <span>हिसार समाचार खोजें (Search Hisar News)</span>
+        </div>
+        <span class="public-modal-close" id="closeSearchModal">&times;</span>
+      </div>
+      <div class="public-modal-body">
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <input type="text" id="quickSearchInput" class="input-box" placeholder="कीवर्ड दर्ज करें जैसे: रिंग रोड, मंडी, पुलिस..." autofocus style="flex: 1;">
+          <button class="btn-post-ad-primary" id="btnQuickSearchSubmit">खोजें</button>
+        </div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">लोकप्रिय विषय:</div>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <a href="search.html?q=रिंग+रोड" class="topic-pill" style="font-size: 11px;">#हिसार रिंग रोड</a>
+          <a href="category.html?slug=mandi-rates" class="topic-pill" style="font-size: 11px;">#मंडी भाव</a>
+          <a href="search.html?q=एयरपोर्ट" class="topic-pill" style="font-size: 11px;">#हिसार एयरपोर्ट</a>
+          <a href="search.html?q=अस्पताल" class="topic-pill" style="font-size: 11px;">#अस्पताल</a>
+          <a href="search.html?q=DESIVERSE" class="topic-pill" style="font-size: 11px;">#DESIVERSE</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. ADVERTISE WITH US INQUIRY MODAL (PUBLIC AD DESK) -->
+  <div class="public-modal-backdrop" id="advertiseInquiryModal">
+    <div class="public-modal-box">
+      <div class="public-modal-header">
+        <div class="public-modal-title">
+          <span>📢</span>
+          <span>विज्ञापन डेस्क · HisarKiAawaj पर विज्ञापन लगाएं</span>
+        </div>
+        <span class="public-modal-close" id="closeAdInquiryModal">&times;</span>
+      </div>
+      <div class="public-modal-body">
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+          हिसार शहर और हरियाणा के 20 लाख+ पाठकों तक अपने व्यापार, अस्पताल, क्लिनिक, स्कूल या शोरूम का विज्ञापन पहुंचाएं।
+        </p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;">
+          <a href="https://wa.me/919896011889?text=Hello%20HisarKiAawaj%20Team%2C%20I%20want%20to%20place%20an%20ad%20on%20your%20website." target="_blank" rel="noopener" style="background: #25d366; color: #fff; padding: 12px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 13px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span>💬</span>
+            <span>WhatsApp पर चैट करें</span>
+          </a>
+          <a href="tel:9896011889" style="background: var(--brand-red); color: #fff; padding: 12px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 13px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span>📞</span>
+            <span>कॉल करें: 98960-11889</span>
+          </a>
+        </div>
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; font-size: 12px;">
+          <strong>उपलब्ध विज्ञापन स्थान (Ad Placements):</strong>
+          <ul style="margin: 8px 0 0 16px; line-height: 1.8; color: var(--text-secondary);">
+            <li>शीर्ष लीडरबोर्ड (Top Leaderboard 970x90)</li>
+            <li>पोस्ट के बीच इन-स्ट्रीम बैनर (Between Posts Banner)</li>
+            <li>समाचार ग्रिड के अंदर प्रायोजित कार्ड (In-Feed Native Card)</li>
+            <li>दाहिनी साइडबार स्लाइडर एवं स्थानीय प्रायोजक शोकेस</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       INTERACTIVE "PLACE YOUR ADS YOURSELF" MANAGEMENT MODAL (Admin Only)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="adManagerModal">
+    <div class="modal-window">
+      <div class="modal-top-bar">
+        <h3 class="modal-title">⚙️ Ad Manager — खुद का विज्ञापन लगाएं / बदलें</h3>
+        <button class="btn-close-modal" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="modal-content-area">
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+          आप किसी भी विज्ञापन स्लॉट में अपनी कस्टम इमेज अपलोड कर सकते हैं, इमेज लिंक पेस्ट कर सकते हैं या तैयार स्थानीय टेम्पलेट्स चुन सकते हैं।
+        </p>
+
+        <div class="form-field">
+          <label for="targetAdSlotSelect">विज्ञापन स्थान चुनें (Target Ad Slot):</label>
+          <select id="targetAdSlotSelect" class="input-box">
+            <option value="adSlotTopLeaderboard">Top Leaderboard (970x90)</option>
+            <option value="adSlotBetweenHeroAndGrid">In-Feed Slot 1 (Between Spotlight & Grid)</option>
+            <option value="adSlotInfeedCard">In-Feed Native Card (Inside Grid)</option>
+            <option value="adSlotBetweenNewsRows">In-Feed Slot 2 (Between Post Rows 728x120)</option>
+            <option value="adSlotSidebarCarousel">Sidebar Ad Carousel (Right Panel)</option>
+            <option value="adSlotOurClients">Our Clients Showcase</option>
+          </select>
+        </div>
+
+        <!-- Option A: Upload Local Image File -->
+        <div class="form-field">
+          <label for="customAdFileInput">📁 अपने कंप्यूटर से इमेज फाइल अपलोड करें (Upload Image):</label>
+          <input type="file" id="customAdFileInput" accept="image/*" class="input-box" style="padding: 6px;">
+        </div>
+
+        <!-- Option B: Paste Image URL -->
+        <div class="form-field">
+          <label for="customAdUrlInput">🔗 अथवा इमेज URL पेस्ट करें (Or Image URL):</label>
+          <input type="text" id="customAdUrlInput" class="input-box" placeholder="https://example.com/ad-banner.jpg">
+        </div>
+
+        <!-- Option C: Choose Pre-Loaded Authentic Hisar Ads -->
+        <div class="form-field">
+          <label>⭐ अथवा तैयार स्थानीय हिसार विज्ञापन चुनें (Or Pick Preset):</label>
+          <div class="preset-ads-grid">
+            <button type="button" class="preset-ad-btn selected" data-preset="cancer_hospital">
+              🏥 महात्मा गांधी कैंसर अस्पताल (डॉ. रमेश बिश्नोई)
+            </button>
+            <button type="button" class="preset-ad-btn" data-preset="juneja_homeopathic">
+              🚗 1 - ड्राइवर | जुनेजा होम्योपैथिक क्लिनिक
+            </button>
+            <button type="button" class="preset-ad-btn" data-preset="plastic_surgery">
+              💉 सोनी प्लास्टिक सर्जरी हॉस्पिटल हिसार
+            </button>
+            <button type="button" class="preset-ad-btn" data-preset="royal_enfield">
+              🏍️ मलिक ऑटोमोबाइल्स रॉयल एनफील्ड हिसार
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="customAdLinkInput">विज्ञापन क्लिक लिंक या व्हाट्सएप नंबर (Target Link):</label>
+          <input type="text" id="customAdLinkInput" class="input-box" placeholder="https://wa.me/919896011889 or tel:9896011889">
+        </div>
+
+        <div class="ad-preview-box" id="customAdPreviewBox" style="display: none;">
+          <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 6px;">इमेज प्रीव्यू (Live Preview):</div>
+          <img id="customAdPreviewImg" src="" alt="Ad Preview" class="ad-preview-img">
+        </div>
+
+        <button type="button" class="btn-post-ad-primary" id="btnSaveCustomAd" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">
+          💾 विज्ञापन सेव करें व वेबसाइट पर लगाएं (Save & Apply Ad)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING AD INSPECTOR PILL (Admin only) -->
+  <div class="floating-ad-tool-pill" id="floatingAdToolBtn" title="Highlight all customizable ad slots">
+    <span>🎯</span>
+    <span>Show All Ad Slots</span>
+  </div>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner-grid">
+      <div>
+        <div class="express-logo-group" style="margin-bottom: 12px;">
+          <div class="express-brand-seal" style="width: 38px; height: 38px; font-size: 22px;">ह</div>
+          <div class="express-brand-text" style="color: #fff; font-size: 28px;">HisarKi<span>Aawaj</span></div>
+        </div>
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.7; max-width: 320px;">
+          हिसार व हरियाणा का स्वतंत्र, निष्पक्ष और बेबाक डिजिटल समाचार मंच। शहर की हर घटना, जन-समस्याएं और स्थानीय कारोबार की आवाज़।
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">श्रेणियां (Categories)</h4>
+        <ul class="footer-links-list">
+          <li><a href="category.html?slug=hisar-special">हिसार शहर</a></li>
+          <li><a href="category.html?slug=haryana">हरियाणा राज्य</a></li>
+          <li><a href="category.html?slug=crime">क्राइम व दुर्घटनाएं</a></li>
+          <li><a href="category.html?slug=mandi-rates">मंडी भाव बुलेटिन</a></li>
+          <li><a href="category.html?slug=education">शिक्षा व रोजगार</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">संपादकीय एवं संपर्क</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">संपादकीय टीम</a></li>
+          <li><a href="index.html">तथ्य-जांच नीति</a></li>
+          <li><a href="#" id="footerAdRatesLink">विज्ञापन दरें व स्लॉट बुकिंग</a></li>
+          <li><a href="index.html">गोपनीयता नीति</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">विज्ञापन डेस्क (Ad Desk)</h4>
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">
+          अपने व्यापार, स्कूल या क्लिनिक का विज्ञापन HisarKiAawaj पर लगाने के लिए सीधे संपर्क करें:
+        </p>
+        <button class="btn-post-ad-primary" style="width: 100%; justify-content: center;" id="btnFooterAdDesk">
+          <span>विज्ञापन लगाएं ↗</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="container footer-bottom-strip">
+      <div>&copy; 2026 HisarKiAawaj Media · हिसार, हरियाणा। सर्वाधिकार सुरक्षित।</div>
+      <div>साहस की पत्रकारिता · स्वतंत्र क्षेत्रीय समाचार एवं विज्ञापन मंच</div>
+    </div>
+  </footer>
+
+  <!-- Supabase JS Client v2 & Configuration -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

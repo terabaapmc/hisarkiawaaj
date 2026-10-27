@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | HisarKiAawaj (हिसार की आवाज़)</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Supabase JS Client v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../supabase-client.js"></script>
+
+  <style>
+    :root {
+      --brand-red: #c5162d;
+      --brand-red-dark: #9e0e22;
+      --navy-dark: #0f172a;
+      --navy-deep: #1e293b;
+      --border-color: #e2e8f0;
+      --bg-slate: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f141c 100%);
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 440px;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-header {
+      background: #ffffff;
+      padding: 32px 32px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand-logo-mark {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #c5162d, #8f0c1e);
+      color: #ffffff;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      font-weight: 900;
+      margin: 0 auto 12px;
+      box-shadow: 0 6px 16px rgba(197, 22, 45, 0.3);
+      transform: rotate(-3deg);
+    }
+
+    .login-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--navy-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .login-title span {
+      color: var(--brand-red);
+    }
+
+    .login-subtitle {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 6px;
+    }
+
+    .login-body {
+      padding: 28px 32px 32px;
+    }
+
+    .alert-banner {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 18px;
+      display: none;
+    }
+
+    .alert-banner.error {
+      display: block;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecdd3;
+    }
+
+    .alert-banner.info {
+      display: block;
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--brand-red);
+      box-shadow: 0 0 0 3px rgba(197, 22, 45, 0.12);
+    }
+
+    .btn-login-submit {
+      width: 100%;
+      background: var(--brand-red);
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-login-submit:hover {
+      background: var(--brand-red-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(197, 22, 45, 0.3);
+    }
+
+    .btn-login-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .login-footer-notes {
+      margin-top: 22px;
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.5;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+    }
+
+    .config-trigger-link {
+      color: var(--brand-red);
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .back-home-link {
+      display: block;
+      margin-top: 10px;
+      color: var(--navy-dark);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .back-home-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Quick Supabase Credentials Modal */
+    .config-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .config-modal.active {
+      display: flex;
+    }
+
+    .config-card {
+      background: #ffffff;
+      border-radius: 14px;
+      max-width: 460px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-header">
+      <div class="brand-logo-mark">ह</div>
+      <h1 class="login-title">HisarKi<span>Aawaj</span></h1>
+      <p class="login-subtitle">Secure Editorial Management & Admin Portal</p>
+    </div>
+
+    <div class="login-body">
+      <!-- Error / Alert Banner -->
+      <div class="alert-banner" id="loginAlert"></div>
+
+      <form id="adminLoginForm">
+        <div class="form-group">
+          <label class="form-label" for="adminEmail">Administrator Email</label>
+          <input type="email" id="adminEmail" class="form-input" placeholder="admin@hisarkiaawaj.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="adminPassword">Password</label>
+          <input type="password" id="adminPassword" class="form-input" placeholder="••••••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn-login-submit" id="btnSubmitLogin">
+          <span>Sign In to Dashboard</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <div class="login-footer-notes">
+        <p>🔒 <b>Restricted Access:</b> Only verified accounts with the <code>admin</code> role in Supabase can access the dashboard. Public self-registration is disabled.</p>
+        <p style="margin-top: 8px;">
+          Need to configure your Supabase keys? <a class="config-trigger-link" id="btnOpenConfigModal">Edit Supabase Connection</a>
+        </p>
+        <a href="../index.html" class="back-home-link">← Return to Public Website</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Supabase Credentials Modal -->
+  <div class="config-modal" id="configModal">
+    <div class="config-card">
+      <h3 style="margin-bottom: 10px; font-size: 16px; font-weight: 800;">⚙️ Configure Supabase Credentials</h3>
+      <p style="font-size: 12px; color: #64748b; margin-bottom: 14px;">
+        Enter your Project URL and Anon/Public Key from your Supabase Dashboard (Project Settings → API).
+      </p>
+
+      <div class="form-group">
+        <label class="form-label">Supabase Project URL</label>
+        <input type="text" id="configUrlInput" class="form-input" placeholder="https://xyzcompany.supabase.co">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Supabase Anon Public Key</label>
+        <input type="text" id="configKeyInput" class="form-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;">
+        <button type="button" class="form-input" style="width: auto; padding: 8px 16px; cursor: pointer;" id="btnCloseConfigModal">Cancel</button>
+        <button type="button" class="btn-login-submit" style="width: auto; padding: 8px 18px; margin: 0;" id="btnSaveConfig">Save Keys</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const loginForm = document.getElementById('adminLoginForm');
+      const emailInput = document.getElementById('adminEmail');
+      const passwordInput = document.getElementById('adminPassword');
+      const submitBtn = document.getElementById('btnSubmitLogin');
+      const alertBox = document.getElementById('loginAlert');
+      const configModal = document.getElementById('configModal');
+      const openConfigBtn = document.getElementById('btnOpenConfigModal');
+      const closeConfigBtn = document.getElementById('btnCloseConfigModal');
+      const saveConfigBtn = document.getElementById('btnSaveConfig');
+      const configUrlInput = document.getElementById('configUrlInput');
+      const configKeyInput = document.getElementById('configKeyInput');
+
+      // Populate config modal with current values
+      configUrlInput.value = window.SUPABASE_CONFIG?.url || '';
+      configKeyInput.value = window.SUPABASE_CONFIG?.anonKey || '';
+
+      // Check if already authenticated as admin -> Auto redirect
+      try {
+        const session = await window.HisarKiAawaj?.checkAdminSession();
+        if (session) {
+          window.location.href = 'dashboard.html';
+          return;
+        }
+      } catch (e) {}
+
+      // Notice if keys are placeholders
+      if (!window.HisarKiAawaj?.isSupabaseConfigured()) {
+        showAlert('Supabase keys not configured yet. Click "Edit Supabase Connection" below to set your keys, or test the dashboard directly.', 'info');
+      }
+
+      // Handle Login
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+          showAlert('Please enter both email and password.', 'error');
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Verifying credentials...</span>';
+        hideAlert();
+
+        try {
+          if (!window.HisarKiAawaj?.isSupabaseConfigured()) {
+            // Demonstration bypass when keys are not plugged in yet
+            showAlert('Demonstration mode: Entering Admin Dashboard with local administrator profile...', 'info');
+            setTimeout(() => {
+              window.location.href = 'dashboard.html?demo=true';
+            }, 800);
+            return;
+          }
+
+          const { user, profile } = await window.HisarKiAawaj.signInAdmin(email, password);
+          showAlert(`Welcome, ${profile.full_name || 'Admin'}! Redirecting to dashboard...`, 'info');
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 600);
+        } catch (err) {
+          showAlert(err.message || 'Login failed. Please verify your credentials and administrator role.', 'error');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Sign In to Dashboard</span><span>→</span>';
+        }
+      });
+
+      // Config Modal Events
+      openConfigBtn.addEventListener('click', () => configModal.classList.add('active'));
+      closeConfigBtn.addEventListener('click', () => configModal.classList.remove('active'));
+
+      saveConfigBtn.addEventListener('click', () => {
+        const url = configUrlInput.value.trim();
+        const key = configKeyInput.value.trim();
+        if (url && key) {
+          localStorage.setItem('hisarkiaawaj_supabase_url', url);
+          localStorage.setItem('hisarkiaawaj_supabase_anon_key', key);
+          window.location.reload();
+        } else {
+          alert('Please enter both Supabase URL and Anon Key.');
+        }
+      });
+
+      function showAlert(msg, type = 'error') {
+        alertBox.textContent = msg;
+        alertBox.className = `alert-banner ${type}`;
+      }
+
+      function hideAlert() {
+        alertBox.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

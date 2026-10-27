@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HisarKiAawaj — News Search">
+  <title id="searchPageTitle">समाचार खोजें | HisarKiAawaj (हिसार की आवाज़)</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .search-hero-zone {
+      background: linear-gradient(135deg, #0e2238 0%, #153252 100%);
+      color: #ffffff;
+      padding: 36px 0;
+      margin-bottom: 28px;
+      border-bottom: 3px solid var(--brand-red);
+    }
+    .search-hero-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .search-hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 3.2vw, 36px);
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+    .search-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      border-radius: var(--radius-full);
+      padding: 6px 8px 6px 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+    .search-input-field {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      color: var(--text-main);
+      font-family: inherit;
+    }
+    .btn-search-submit {
+      background: var(--brand-red);
+      color: #ffffff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .btn-search-submit:hover {
+      background: var(--brand-red-dark);
+    }
+    .search-suggested-tags {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .search-tag-chip {
+      background: rgba(255,255,255,0.12);
+      color: #e2e8f0;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .search-tag-chip:hover {
+      background: var(--brand-red);
+      color: #ffffff;
+    }
+    .search-meta-bar {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 14px;
+    }
+    .search-results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .search-result-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .search-result-card:hover {
+      border-color: var(--brand-red);
+      box-shadow: var(--shadow-card);
+      transform: translateY(-2px);
+    }
+    .search-result-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+    }
+    .search-result-headline {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.35;
+      color: var(--dark-obsidian);
+      margin: 6px 0 8px;
+    }
+    .search-result-excerpt {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .highlight-match {
+      background: #fef08a;
+      color: #854d0e;
+      padding: 0 2px;
+      border-radius: 2px;
+      font-weight: 700;
+    }
+    @media (max-width: 640px) {
+      .search-result-card {
+        grid-template-columns: 1fr;
+      }
+      .search-result-img {
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LAYER 1: Network & City Strip -->
+  <div class="network-top-strip">
+    <div class="container network-strip-inner">
+      <div class="network-strip-left">
+        <span id="liveDateTimeIst">शनिवार, 17 अक्टूबर 2026 | 00:00 IST</span>
+        <span style="color: var(--border-color);">|</span>
+        <div class="network-cities-list">
+          <a href="category.html?slug=hisar-special" class="city-pill-link highlight">हिसार विशेष</a>
+          <a href="category.html?slug=hisar-special&district=hansi" class="city-pill-link">हांसी</a>
+          <a href="category.html?slug=hisar-special&district=barwala" class="city-pill-link">बरवाला</a>
+          <a href="category.html?slug=hisar-special&district=adampur" class="city-pill-link">आदमपुर</a>
+          <a href="category.html?slug=haryana&district=fatehabad" class="city-pill-link">फतेहाबाद</a>
+          <a href="category.html?slug=haryana&district=sirsa" class="city-pill-link">सिरसा</a>
+          <a href="category.html?slug=haryana" class="city-pill-link">हरियाणा Tak</a>
+          <a href="category.html?slug=mandi-rates" class="city-pill-link highlight">MandiTak ▾</a>
+        </div>
+      </div>
+
+      <div class="network-strip-right">
+        <button class="city-pill-link" id="langToggleBtn" type="button" style="font-weight: 700;">EN / हिंदी</button>
+        <a href="admin/login.html" class="btn-signin-pill" title="Administrator Login">
+          <span>Admin Login</span>
+          <span>👤</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYER 2: Grand Masthead -->
+  <header class="express-masthead">
+    <div class="container express-masthead-inner">
+      <div class="masthead-weather-date">
+        <div class="masthead-weather-row" id="mastheadWeatherWidget" style="cursor: pointer;">
+          <span>☀️ 28°C हिसार (AQI 142 · मध्यम)</span>
+        </div>
+        <div class="masthead-sub-edition">
+          <span>आज का अखबार · HISAR DIGITAL EDITION</span>
+        </div>
+      </div>
+
+      <div class="masthead-center-brand">
+        <a href="index.html" class="express-brand-link" aria-label="HisarKiAawaj Homepage">
+          <div class="express-logo-group">
+            <div class="express-brand-seal">ह</div>
+            <div class="express-brand-text">HisarKi<span>Aawaj</span></div>
+          </div>
+          <div class="express-tagline-motto">साहस की पत्रकारिता · शहर की नब्ज़, आपकी ताक़त</div>
+        </a>
+      </div>
+
+      <div class="masthead-actions-right">
+        <button class="btn-post-ad-primary" id="btnHeaderPostAd">
+          <span>📢</span>
+          <span>विज्ञापन लगाएं</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- LAYER 3: Navy Navbar -->
+  <nav class="aajtak-navbar" aria-label="Main Navigation">
+    <div class="container aajtak-nav-inner">
+      <div class="nav-left-cluster">
+        <button class="btn-hamburger-toggle" id="mobileMenuBtn" aria-label="Open Menu">☰</button>
+        <a href="index.html" class="aajtak-logo-badge">
+          <span>हिसार की आवाज़</span>
+        </a>
+      </div>
+
+      <div class="aajtak-nav-links">
+        <a href="index.html" class="aajtak-nav-item">होम</a>
+        <a href="category.html?slug=hisar-special" class="aajtak-nav-item">हिसार विशेष</a>
+        <a href="category.html?slug=haryana" class="aajtak-nav-item">हरियाणा</a>
+        <a href="category.html?slug=crime" class="aajtak-nav-item">क्राइम व जांच</a>
+        <a href="category.html?slug=mandi-rates" class="aajtak-nav-item" style="color: #fbbf24;">मंडी भाव 🔴</a>
+        <a href="category.html?slug=education" class="aajtak-nav-item">शिक्षा-करियर</a>
+        <a href="category.html?slug=business" class="aajtak-nav-item">कारोबार</a>
+        <a href="category.html?slug=sports" class="aajtak-nav-item">खेल</a>
+        <a href="category.html?slug=lifestyle" class="aajtak-nav-item">लाइफस्टाइल</a>
+      </div>
+
+      <div class="aajtak-nav-right-tools">
+        <div class="edition-select-chip" id="editionSelectChip">
+          <span>EDITION</span>
+          <span style="color: #f59e0b;" id="currentEditionLabel">🇮🇳 HISAR ▾</span>
+        </div>
+        <button class="tool-icon-btn" id="ePaperBtn" title="E-Paper"><span>📰</span></button>
+        <button class="tool-icon-btn" id="aqiBtn" title="AQI"><span>🍃 AQI 142</span></button>
+        <button class="tool-icon-btn" id="notificationsBtn" title="Alerts">
+          <span>🔔</span>
+          <span class="alert-counter-badge">3</span>
+        </button>
+        <button class="btn-live-tv-aajtak" id="liveTvBtn"><span>LIVE</span><span>📺</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SEARCH HERO SECTION -->
+  <section class="search-hero-zone">
+    <div class="container search-hero-inner">
+      <h1 class="search-hero-title">हिसार व हरियाणा समाचार खोजें</h1>
+      <div class="search-input-wrapper">
+        <input type="text" id="mainSearchInput" class="search-input-field" placeholder="समाचार शीर्षक, शहर या विषय दर्ज करें..." autofocus>
+        <button class="btn-search-submit" id="btnExecuteSearch">
+          <span>🔍</span>
+          <span>खोजें</span>
+        </button>
+      </div>
+      <div class="search-suggested-tags">
+        <span>ट्रेंडिंग खोज:</span>
+        <span class="search-tag-chip" onclick="executeSearchWithTerm('रिंग रोड')">#रिंग रोड</span>
+        <span class="search-tag-chip" onclick="executeSearchWithTerm('सरसों मंडी भाव')">#सरसों मंडी भाव</span>
+        <span class="search-tag-chip" onclick="executeSearchWithTerm('हिसार एयरपोर्ट')">#हिसार एयरपोर्ट</span>
+        <span class="search-tag-chip" onclick="executeSearchWithTerm('DESIVERSE')">#DESIVERSE</span>
+        <span class="search-tag-chip" onclick="executeSearchWithTerm('पुलिस')">#पुलिस</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN SEARCH RESULTS -->
+  <main class="container" style="margin-bottom: 60px;">
+    <div class="search-meta-bar">
+      <div>
+        <strong id="searchResultsQueryText">खोज परिणाम</strong>:
+        <span id="searchResultsCountText" style="color: var(--text-muted);">लोड हो रहा है...</span>
+      </div>
+      <a href="index.html" style="font-size: 12px; font-weight: 700; color: var(--brand-red);">← मुख्य पृष्ठ पर लौटें</a>
+    </div>
+
+    <!-- Results List -->
+    <div class="search-results-list" id="searchResultsList">
+      <!-- Populated dynamically -->
+    </div>
+
+    <!-- No Results Empty Box -->
+    <div class="empty-category-box" id="searchNoResultsBox" style="display: none;">
+      <div style="font-size: 40px; margin-bottom: 12px;">🔍</div>
+      <h3 style="font-size: 18px; margin-bottom: 8px;">कोई समाचार नहीं मिला</h3>
+      <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">
+        कृपया कोई अन्य कीवर्ड दर्ज करें या हमारे ट्रेंडिंग विषयों में से चुनें।
+      </p>
+      <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+        <a href="category.html?slug=hisar-special" class="btn-post-ad-primary" style="background: var(--aajtak-navy);">हिसar विशेष</a>
+        <a href="category.html?slug=mandi-rates" class="btn-post-ad-primary" style="background: #f59e0b;">मंडी भाव</a>
+        <a href="category.html?slug=haryana" class="btn-post-ad-primary">हरियाणा</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-bottom-strip">
+      <div>&copy; 2026 HisarKiAawaj Media · हिसार, हरियाणा। सर्वाधिकार सुरक्षित।</div>
+      <div>साहस की पत्रकारिता · स्वतंत्र क्षेत्रीय समाचार एवं विज्ञापन मंच</div>
+    </div>
+  </footer>
+
+  <!-- Supabase JS Client v2 & Configuration -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
